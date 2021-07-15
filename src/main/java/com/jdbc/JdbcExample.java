@@ -1,7 +1,5 @@
 package com.jdbc;
 
-import com.mysql.cj.protocol.Resultset;
-
 import java.sql.*;
 
 /**
