@@ -206,3 +206,336 @@ Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接
    34474855 -rw-r--r--. 2 root root 451 Jun 10 2014 /etc/crontab
    53745909 lrwxrwxrwx. 1 root root 12 Jun 23 22:31 /root/crontab2 -> /etc/crontab
    ```
+### 获取文件内容
+1. cat      
+   取得文件内容      
+   ``` 
+   ## cat [-AbEnTv] filename
+   -n ：打印出行号，连同空白行也会有行号，-b 不会
+   ```
+1. tac      
+   是cat的反向操作，从最后一行开始打印
+1. more
+   和cat不同的是他可以一页一页查看文件内容，比较适合大文件的查看
+1. less
+   和more类似，但是多了一个向前翻页的功能。
+1. head
+   取得文件前几行
+   ``` 
+   ## head [-n number] filename
+   -n ：后面接数字，代表显示几行的意思
+   ```
+1. tail
+   是head的反向操作，只是取得是后几行
+1. od
+   以字符或者十六进制的形式显示二进制文件
+### 指令与文件搜索
+1. which
+   指令搜索
+   ``` 
+   ## which [-a] command
+   -a ：将所有指令列出，而不是只列第一个
+   ```
+1. whereis
+   文件搜索，速度比较快，因为它只搜索几个特定的目录
+   ``` 
+   ## whereis [-bmsu] dirname/filename
+   ```
+1. lcate
+   文件搜索。可以用关键字或者正则表达式进行搜索。locate使用/var/lib/mlocate/这个数据库进行搜索，它存储在内存中并且每天更新一次，所以无法用 locate 搜索新建的文件。可以使用 updatedb 来立即更新数据库。
+   ``` 
+   ## locate [-ir] keyword
+   -r：正则表达式 
+   ```
+1. find
+   文件搜索。可以使用文件的属性和权限进行搜索
+   ``` 
+   ## find [basedir] [option]
+   example: find . -name "shadow*"
+   ```
+## 压缩与打包
+### 压缩文件名
+Linux底下有很多压缩文件名      
+![img_6.png](img_6.png)
+### 压缩指令
+1. gzip
+   gzip是Linux使用最广的压缩指令，可以解开compress、zip和gzip所压缩的文件。经过gzip压缩过，源文件就不存在了。有9个不同的压缩登记可以使用，可以使用zcat、zmore、zless来读取压缩文件的内容        
+   ``` 
+   $ gzip [-cdtv#] filename
+   -c ：将压缩的数据输出到屏幕上
+   -d ：解压缩
+   -t ：检验压缩文件是否出错
+   -v ：显示压缩比等信息
+   -# ： # 为数字的意思，代表压缩等级，数字越大压缩比越高，默认为 6
+   ```
+1. bzip2
+   提供不gzip更高的压缩比，查看命令：bzcat、bzmore、bzless、bzgrep      
+   ``` 
+   $ bzip2 [-cdkzv#] filename
+   -k ：保留源文件
+   ```
+1. xz
+   提供比bzip2更佳的压缩比，可以看到gzip、bzip2、xz的压缩比不断优化，不过要注意的是，压缩比越高，压缩的时间也越长。查看命令：xzcat、xzmore、xzless、xzgre     
+   ```$ xz [-dtlkc#] filename```
+### 打包
+压缩指令只能对一个文件进行压缩，而打包能够将多个文件打包成一个大文件。tar 不仅可以用于打包，也可以使用 gzip、bzip2、xz 将打包文件进行压缩。      
+``` 
+$ tar [-z|-j|-J] [cv] [-f 新建的 tar 文件] filename...  ==打包压缩
+$ tar [-z|-j|-J] [tv] [-f 已有的 tar 文件]              ==查看
+$ tar [-z|-j|-J] [xv] [-f 已有的 tar 文件] [-C 目录]    ==解压缩
+-z ：使用 zip；
+-j ：使用 bzip2；
+-J ：使用 xz；
+-c ：新建打包文件；
+-t ：查看打包文件里面有哪些文件；
+-x ：解打包或解压缩的功能；
+-v ：在压缩/解压缩的过程中，显示正在处理的文件名；
+-f : filename：要处理的文件；
+-C 目录 ： 在特定目录解压缩。
+```      
+![img_7.png](img_7.png)
+## Bash
+可以通过Shell请求内核提供服务，Bash正是Shell的一种
+### 特性
+* 命令历史：记录使用过的命令
+* 命令与文件补全：快捷键：tab
+* 命令别名：例如ll是ls -al的别名
+* shell scripts
+* 通配符：如ls -l /usr/bin/X*列出/usr/bin下面所有以X开头的文件
+### 变量操作
+对一个变量赋值直接使用=。对变量取用需要在变量前加上$，也可以使用${}的形式，输出变量使用ehco命令     
+``` 
+$ x=abc
+$ echo $x
+$ echo ${x}
+```      
+变量内容如果有空格，必须使用双引号或者单引号
+* 双引号内的特殊字符可以保留原本特性，如x="lang is $LANG"，则 x 的值为 lang is zh_TW.UTF-8；
+* 单引号内的特殊字符就是特殊字符本身，例如 x='lang is $LANG'，则 x 的值为 lang is $LANG。
+
+可以使用 `指令` 或者 $(指令) 的方式将指令的执行结果赋值给变量。例如 version=$(uname -r)，则 version 的值为 4.15.0-22-generic。
+
+可以使用 export 命令将自定义变量转成环境变量，环境变量可以在子程序中使用，所谓子程序就是由当前 Bash 而产生的子 Bash。
+
+Bash 的变量可以声明为数组和整数数字。注意数字类型没有浮点数。如果不进行声明，默认是字符串类型。变量的声明使用 declare 命令：
+``` 
+$ declare [-aixr] variable
+-a ： 定义为数组类型
+-i ： 定义为整数类型
+-x ： 定义为环境变量
+-r ： 定义为 readonly 类型
+```      
+使用 [ ] 来对数组进行索引操作：
+``` 
+$ array[1]=a
+$ array[2]=b
+$ echo ${array[1]}
+```
+### 指令搜索顺序
+* 以绝对或相对路径来执行指令，如/bin/ls或者./ls
+* 由别名找到该指令来执行
+* 由Bash内置的指令来执行
+* 按$PATH变量指定的搜索路径的顺序找到第一个指令来执行
+### 数据流重定向
+重定向指的是使用文件代替标准输入、标准输出和标准错误输出     
+![img_8.png](img_8.png)    
+其中，有一个箭头的表示以覆盖的方式重定向，而有两个箭头的表示以追加的方式重定向。
+
+可以将不需要的标准输出以及标准错误输出重定向到 /dev/null，相当于扔进垃圾箱。
+
+如果需要将标准输出以及标准错误输出同时重定向到一个文件，需要将某个输出转换为另一个输出，例如 2>&1 表示将标准错误输出转换为标准输出。      
+```$ find /home -name .bashrc > list 2>&1```
+## 管道指令
+管道是将一个命令的标准输出作为另一个命令的标准输入，在数据需要经过多个步骤的处理之后才能得到我们想要的内容时就可以使用管道。
+
+在命令之间使用 | 分隔各个管道命令。        
+```$ ls -al /etc | less```
+### 提取指令
+cut对数据进行切分，去除想要的部分.切分过程一行一行地进行      
+``` 
+$ cut
+-d ：分隔符
+-f ：经过 -d 分隔后，使用 -f n 取出第 n 个区间
+-c ：以字符为单位取出区间
+```      
+如last 显示登入者的信息，取出用户名。      
+``` 
+$ last
+root pts/1 192.168.201.101 Sat Feb 7 12:35 still logged in
+root pts/1 192.168.201.101 Fri Feb 6 12:13 - 18:46 (06:33)
+root pts/1 192.168.201.254 Thu Feb 5 22:37 - 23:53 (01:16)
+
+$ last | cut -d ' ' -f 1
+```      
+如将 export 输出的信息，取出第 12 字符以后的所有字符串。        
+``` 
+$ export
+declare -x HISTCONTROL="ignoredups"
+declare -x HISTSIZE="1000"
+declare -x HOME="/home/dmtsai"
+declare -x HOSTNAME="study.centos.vbird"
+.....(其他省略).....
+
+$ export | cut -c 12-
+```
+### 排序指令
+sort用于排序    
+``` 
+$ sort [-fbMnrtuk] [file or stdin]
+-f ：忽略大小写
+-b ：忽略最前面的空格
+-M ：以月份的名字来排序，例如 JAN，DEC
+-n ：使用数字
+-r ：反向排序
+-u ：相当于 unique，重复的内容只出现一次
+-t ：分隔符，默认为 tab
+-k ：指定排序的区间
+
+$ cat /etc/passwd | sort -t ':' -k 3
+root:x:0:0:root:/root:/bin/bash
+dmtsai:x:1000:1000:dmtsai:/home/dmtsai:/bin/bash
+alex:x:1001:1002::/home/alex:/bin/bash
+arod:x:1002:1003::/home/arod:/bin/bash
+```      
+uniq可以将重复的数据只取一个     
+``` 
+$ uniq [-ic]
+-i ：忽略大小写
+-c ：进行计数
+
+$ last | cut -d ' ' -f 1 | sort | uniq -c
+1
+6 (unknown
+47 dmtsai
+4 reboot
+7 root
+1 wtmp
+```
+### 双向输出重定向
+输出重定向会将输出内容重定向到文件中，而 tee 不仅能够完成这个功能，还能保留屏幕上的输出。也就是说，使用 tee 指令，一个输出会同时传送到文件和屏幕上。        
+```$ tee [-a] file```
+### 字符转换指令
+tr 用来删除一行中的字符，或者对字符进行替换。      
+``` 
+$ tr [-ds] SET1 ...
+-d ： 删除行中 SET1 这个字符串
+
+#将 last 输出的信息所有小写转换为大写。
+$ last | tr '[a-z]' '[A-Z]'
+```      
+col 将 tab 字符转为空格字符。     
+``` 
+$ col [-xb]
+-x ： 将 tab 键转换成对等的空格键
+```      
+expand 将 tab 转换一定数量的空格，默认是 8 个。     
+``` 
+$ expand [-t] file
+-t ：tab 转为空格的数量
+```      
+join 将有相同数据的那一行合并在一起。      
+``` 
+$ join [-ti12] file1 file2
+-t ：分隔符，默认为空格
+-i ：忽略大小写的差异
+-1 ：第一个文件所用的比较字段
+-2 ：第二个文件所用的比较字段
+```         
+paste 直接将两行粘贴在一起。    
+```
+$ paste [-d] file1 file2
+-d ：分隔符，默认为 tab
+```
+### 分区指令
+split 将一个文件划分成多个文件。     
+``` 
+$ split [-bl] file PREFIX
+-b ：以大小来进行分区，可加单位，例如 b, k, m 等
+-l ：以行数来进行分区。
+- PREFIX ：分区文件的前导名称
+```
+## 正则表达式
+### grep
+g/re/p（globally search a regular expression and print)，使用正则表示式进行全局查找并打印。      
+``` 
+$ grep [-acinv] [--color=auto] 搜寻字符串 filename
+-c ： 统计匹配到行的个数
+-i ： 忽略大小写
+-n ： 输出行号
+-v ： 反向选择，也就是显示出没有 搜寻字符串 内容的那一行
+--color=auto ：找到的关键字加颜色显示
+
+$ grep -n 'the' regular_express.txt
+8:I can't finish the test.
+12:the symbol '*' is represented as start.
+15:You are the best is mean you are the no. 1.
+16:The world Happy is the same with "glad".
+18:google is the best tools for search keyword
+
+#正则表达式 a{m,n} 用来匹配字符 a m~n 次，这里需要将 { 和 } 进行转义，因为它们在 shell 是有特殊意义的。
+$ grep -n 'a\{2,5\}' regular_express.txt
+```
+### printf
+用于格式化输出。它不属于管道命令，在给 printf 传数据时需要使用 $( ) 形式。
+``` 
+$ printf '%10s %5i %5i %5i %8.2f \n' $(cat printf.txt)
+    DmTsai    80    60    92    77.33
+     VBird    75    55    80    70.00
+       Ken    60    90    70    73.33
+```
+### awk
+是由 Alfred Aho，Peter Weinberger 和 Brian Kernighan 创造，awk 这个名字就是这三个创始人名字的首字母。
+
+awk 每次处理一行，处理的最小单位是字段，每个字段的命名方式为：$n，n 为字段号，从 1 开始，$0 表示一整行。    
+``` 
+#取出最近五个登录用户的用户名和 IP。首先用 last -n 5 取出用最近五个登录用户的所有信息，可以看到用户名和 IP 分别在第 1 列和第 3 列，我们用 $1 和 $3 就能取出这两个字段，然后用 print 进行打印。
+$ last -n 5
+dmtsai pts/0 192.168.1.100 Tue Jul 14 17:32 still logged in
+dmtsai pts/0 192.168.1.100 Thu Jul 9 23:36 - 02:58 (03:22)
+dmtsai pts/0 192.168.1.100 Thu Jul 9 17:23 - 23:36 (06:12)
+dmtsai pts/0 192.168.1.100 Thu Jul 9 08:02 - 08:17 (00:14)
+dmtsai tty1 Fri May 29 11:55 - 12:11 (00:15)
+
+$ last -n 5 | awk '{print $1 "\t" $3}'
+dmtsai   192.168.1.100
+dmtsai   192.168.1.100
+dmtsai   192.168.1.100
+dmtsai   192.168.1.100
+dmtsai   Fri
+```
+## 进程管理
+### 查看进程
+1. ps
+   查看某个时间点的进程信息。
+   ``` 
+   #查看自己的进程
+   ## ps -l
+   
+   #查看系统所有进程
+   ## ps aux
+   
+   #查看特定的进程
+   ## ps aux | grep threadx
+   ```      
+1. pstree
+   查看进程树    
+   ``` 
+   #查看所有进程树
+   ## pstree -A
+   ```      
+1. top
+   实时显示进程信息       
+   ``` 
+   #两秒钟刷新一次
+   ## top -d 2
+   ```
+1. netstat
+   查看占用端口的进程      
+   ``` 
+   #查看特定端口的进程
+   ## netstat -anp | grep port
+   ```
+### 进程状态
+![img_9.png](img_9.png)    
+![img_10.png](img_10.png)     
+
