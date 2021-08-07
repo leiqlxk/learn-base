@@ -150,6 +150,37 @@
     font-style: bold;
     }
     ```
+### 伪类和伪元素
+1. 伪类（pseudo-classes）：不需要想class一样在元素上标注，常见的伪类有：
+   * 动态伪类（dynamic pseudo-classes）：
+     * :link
+     * :visited
+     * :hover
+     * :active
+     * :focus
+   * 目标伪类（target pseudo-classes）：
+     * :target可以选中被选中的锚点
+   * 语言伪类（language pseudo-classes）：
+     * :lange()
+   * 元素状态伪类（UI element states pseudo-classes）：
+     * :enabled
+     * :disabled
+     * :checked
+   * 结构伪类（structural pseudo-classes）：
+     * :nth-child()
+     * :nth-last-child()
+     * :nth-of-type()
+     * :nth-last-of-type()
+     * :first-child
+     * :last-child
+     * :first-of-type
+     * :last-of-type
+     * :root
+     * :only-child
+     * :only-of-type
+     * :empty
+   * 否定伪类（negation pseudo-classes）：
+     * :not()
 ### css属性
 1. 常用属性
    * color：前景色，字体颜色
