@@ -208,6 +208,14 @@
    * font-variant：可以影响小写字母的显示形式，值为normal、small-caps（将小写字母替换为缩小过的大写字母）
    * line-height：设置文本的最小行高，可以简单理解为一行文字所占据的高度，严格来说其为两行文字基线之间的间距，因为行距为等分所以它就是一行文字的高度，height为元素整体的高度，注意区分。行高可以用来做垂直居中，当height和line-height相等时就居中了
    * font：是一个缩写属性，可以一次性设置以上的所有属性，字体大小和行高的设置方式为font-size/line-height，并且font-family必须在其后面，其他三个属性在其前面顺序随意
+4. 列表属性（可继承）：正常设置为none不使用列表默认的东西，而是通过自定义内容和css来控制
+   * list-style-type：不显示序号标记（none），实心圆（disc），空心圆（circle）,实心方块（square），数字（decimal），大写罗马字符（upper-roman）、小写罗马字符（lower-roman），小写字母（lower-alpha）等
+   * list-style-image：序号替换成图片，值为url()
+   * list-style-position：序号内容包在列表内容内（inside）、放在列表内容外（outside）
+   * list-style:缩写属性，一般使用的值为none，不使用列表自带的序号等，通过自定义的内容和css来实现
+5. 表格属性
+   * border-collapse：用来决定表格的边框是分开还是合并，分开（separate），合并（collapse）
+   * border-spacing：指定相邻单元格边框之间的距离，只适用于边框分离模式
 ### css特性
 1. 继承：一个元素如果没有设置某属性，就会跟随父元素的值，如果自身有设置值则使用自身设置的值，宽、高、背景色等属性不会继承，但可以使用inherit来强制继承。**注意css属性继承的是计算值而不是字面量** 
 2. 层叠：css允许多个相同名字的css属性层叠在同一个元素上
