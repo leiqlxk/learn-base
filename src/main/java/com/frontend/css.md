@@ -189,10 +189,30 @@
 ### css属性
 1. 常用属性
    * color：前景色，字体颜色
+   * background-color：背景色
+   * background-image：设置元素的背景图片，其会盖在background-color的上面但不是覆盖，不会撑起内容，即当元素没有宽高背景图也就不展示
+     * url()：可以设置多个用逗号隔开，默认显示第一个，当第一个不存在时显示第二个一次类推
+   * background-repeat：默认值为按需重复来覆盖整个背景图片所在区域，最后一个图像会被裁剪（repeat，repeat-x，repeat-y），图像尽可能的重复但不会裁剪（space），铺满整个区域不留空隙，但会根据浏览器的计算进行伸展或收缩（round），不重复（no-repeat）
+   * background-size：背景图片多大就显示多大-默认值（auto）、覆盖即拉伸占满（cover）、铺满宽度或高度等比缩放（contain）、百分比（x% y%）、具体大小（*px *px）
+   * background-position：设置图片位置
+     * 可以输入具体值*px *px
+     * 水平、竖直方向都有三个固定值：center、left、right和center、top、bottom，当只有水平方向值时，竖直方向默认居中
    * font-size：字体大小，单位可以为px，em，rem和百分比等，google默认字体大小为16px
-   * background-color:：背景色
+   * display：块级（block）、行内级（inline）、行内块（inline-block）、隐藏（none，元素不再占用空间）、列表的块级显示（list-item）、table中使用的块级（table、table-row-group、table-row、inline-table）
    * width/height：宽度和高度，其对内联元素无效，值为百分比时相对的应该是它的包含块
+   * visibility：控制元素是否可见，显示（visible）、隐藏（hidden，元素还是会占有原先的空间）
+   * overflow：用于控制元素溢出时的行为，超出依然显示（visible，默认值），溢出的内容直接裁剪（hidden），溢出的内容被裁剪但是可以通过滚动查看（scroll），根据内容是否溢出决定是否提供滚动机制（auto）
+   * overflow-x、overflow-y：效果同上，只是单独确定x或y轴的行为
    * outline：类似于border，但其只是边框的轮廓不会增加元素的大小，经常用在div可以作为调试技巧看页面布局
+   * transform：允许旋转、缩放、倾斜或平移，旋转，旋转方向为顺时针（rotate（-45deg）），移动（translate(120px, 50%)），缩放（scale(2, 0.5)），倾斜（skew(30deg, 20deg)）
+   * box-shadow：盒子阴影效果，inset? && <length>{2,4}&&<color>?
+     * length
+       * 第一个length：水平方向的偏移，正数往右偏移
+       * 第二个length：垂直方向的偏移，正数往下偏移
+       * 第三个length：模糊半径
+       * 第四个length：四周向外延伸
+     * color：设置颜色
+     * inset：外框阴影变成内框阴影
 2. 文本属性（通常子元素会继承）
    * text-decoration：用于设置文字的装饰线。值为：无任何装饰线（none）、上划线（overline）、下划线（underline）、删除线（line-through）
    * text-transform：用于设置文字的大小写转换，值为：没有任何影响（none）、每个单词首字符变为大写（capitalize）、所有字符大写（uppercase）、所有字符小写（lowercase）
@@ -200,6 +220,7 @@
    * text-align：设置元素内容在元素中的水平方式，其值为左对齐（left）、右对齐（right）、居中（center）、两端对齐但是它对最后一行没有效果要设置最后一行的话要使用text-align-last（justify）
    * letter-spacing：字母间距
    * word-spacing：单词间距
+   * word-break：单词默认情况下是不允许断掉的，即超出宽度后也不会换行，可以使用此属性
 3. 文字属性（通常子元素会继承）
    * font-size：字体大小，这里面的em和百分都是相对于父元素的font-size大小，1em为100%，2em为200%
    * font-family：设置文字的字体，为了防止设置的字体刚好操作系统中不存在我们可以设置多个字体用逗号隔开，其会从头开始找直到找到为止，如果都没有则使用默认字体。一般情况下英文字体只适用英文，中文字体既支持中文也支持英文，那么如果就是想分别使用不一样的中英文字体则要把英文字体放在前面
@@ -208,6 +229,7 @@
    * font-variant：可以影响小写字母的显示形式，值为normal、small-caps（将小写字母替换为缩小过的大写字母）
    * line-height：设置文本的最小行高，可以简单理解为一行文字所占据的高度，严格来说其为两行文字基线之间的间距，因为行距为等分所以它就是一行文字的高度，height为元素整体的高度，注意区分。行高可以用来做垂直居中，当height和line-height相等时就居中了
    * font：是一个缩写属性，可以一次性设置以上的所有属性，字体大小和行高的设置方式为font-size/line-height，并且font-family必须在其后面，其他三个属性在其前面顺序随意
+   * text-shadow：文字阴影，<length>{2,3}&&<color>?
 4. 列表属性（可继承）：正常设置为none不使用列表默认的东西，而是通过自定义内容和css来控制
    * list-style-type：不显示序号标记（none），实心圆（disc），空心圆（circle）,实心方块（square），数字（decimal），大写罗马字符（upper-roman）、小写罗马字符（lower-roman），小写字母（lower-alpha）等
    * list-style-image：序号替换成图片，值为url()
@@ -227,7 +249,71 @@
      * 类选择器、属性选择器、伪类选择器的权重为10
      * 元素、伪元素选择器的权重为1方便计算
      * 通配符为0
-### 颜色设置
+### 元素类型
+1. 按显示方式分
+   1. 块级元素（block-level elements）：和其它元素不能在同一行显示，独占父元素一行
+      * div、p、h、ul、ol、li、dl、dt、dd、table、form、header、main、footer、nav、section、hr等
+   2. 行内元素（inline-level elements）：多个行内级元素可以再父元素的同一行中显示
+      * a、img、span、strong、code、iframe、label、input、button、canvas、embed、video、audio等
+2. 根据元素的内容类型分：行内替换元素（inline-block）可以设置宽高，非替换元素才不能设置宽高，其宽高由内容决定
+   1. 替换元素（replaced element）：元素本身没有实际内容，浏览器根据元素的类型和属性来决定元素的具体显示内容
+      * img、input、iframe、video、audio、embed、canvas等
+   2. 非替换元素（non-replaced element）：和替换元素相反，元素本身是有实际内容的，浏览器会直接将其内容显示出来，而不需要根据元素类型和属性来判断到底显示什么内容     
+   ![img.png](img.png)
+### 解决行内级元素换行产生空格问题的几种方法
+1. 去除元素之间的空格、换行
+2. 元素间的换行使用注释包裹
+3. 设置父元素的font-size为0，然后再元素中重新设置自己需要的font-size（Safari上不支持）
+4. 给元素加float
+### 盒子模型
+1. html中的每一个元素都可以看做是一个盒子，可以具备四个属性：内容（content），内边距（padding），边框（border）以及外边距（margin）
+2. box-sizing：设置盒子的尺寸计算方式，设置宽度和高度时只是指定内容的宽高，默认值（content-box），设置宽度和高度时是内容+内边距+边框的宽高（border-box）
+3. 内容属性（content）：
+   * width：设置内容宽度
+   * min-width：最小宽度
+   * max-width：最大宽度
+   * height：设置内容高度
+   * min-height：最小高度
+   * max-height：最大高度
+4. 内边距（padding）：
+   * 四个方向：padding-top、padding-right、padding-bottom、padding-left
+   * 简写（padding）：顺序为顺时针，且上下、左右可以合并为一个，如果缺少left的值就使用right的值，缺少bottom则使用top的值
+   * top、bottom对行内非替换元素有效但是其不占据空间，即会延伸到别的元素内部
+5. 边框（border）：
+   * 边框的宽度
+     * border-top-width、border-right-width、border-bottom-width、border-left-width
+     * border-width为简写
+   * 边框颜色
+     * border-top-color、border-right-color、border-bottom-color、border-left-color
+     * border-color为简写
+   * 边框样式：无（none）、点状（dotted）、虚线（dashed）、实线（solid）、双重实线（double）、槽（groove）、脊（ridge）、陷入式（inset）、突出式（outset）
+     * border-top-style、border-right-style、border-bottom-style、border-left-style
+     * border-style为简写
+   * border为以上三类属性的简写且也可以分成四个写：border-top、border-right、border-bottom、border-left
+   * 圆角属性：border- * - * -radius、border-radius,值可以为px，也可以为百分比其参考的是当前元素的border+padding+width
+   * top、bottom对行内非替换元素有效但是其不占据空间，即会延伸到别的元素内部
+6. 外边距（margin）：
+   * 四个方向：margin-top、padding-right、margin-bottom、padding-left
+   * 简写：margin，规律和内边距相同
+   * 上下margin折叠（合并）：块级元素margin的上下会合并两个元素设置的值，即如果上行的元素设置了bottom并且下行设置了top则实际的空间只有一个，但是左右不会产生合联
+   * margin-top传递：如果块级元素的顶部线和父元素的底部线重叠，那么margin-top会传递到父元素
+   * margin-bottom传递：如果块级元素的底部线和父元素的底部线重叠，并且父元素的高度是auto，那么这个块级元素的margin-bottom值会传递给父元素
+   * top、bottom对行内非替换元素无效
+   * 解决传递的方法：
+     * 给父元素设置padding-top、padding-bottom使它们不会重合
+     * 给父元素设置边框也可以使它们不会重叠
+     * 触发结界（BFC，block format context）：浮动可以触发，设置一个元素的overflow为非visible也可以触发
+### 水平居中：不同类型的方式
+1. 普通文本：text-align
+2. 行内元素：text-align
+3. 行内替换元素：text-align
+4. 行内块级元素：text-align
+5. 块级元素：margin：0 auto
+### 元素嵌套总结
+1. 块级元素和行内块级元素，可以嵌套任意的元素
+2. 行内元素一般只包含行内元素
+3. 特殊情况：p元素不能包含其他块级元素
+### 颜色设置（flatuicolors.com）
 1. 英文单词，即基本颜色的关键字，如red、green、black、blue等，但其表现的颜色种类有限
 2. RGB颜色：即以红（red）、绿色（green）、蓝色（blue）三个颜色的通道变化及叠加来得到各式各样的颜色
    * 十进制表示时每个颜色的取值范围为0~255，表示方法为rgb(0, 0, 0)所有都是0的情况为黑色，所有都为255时为白色
