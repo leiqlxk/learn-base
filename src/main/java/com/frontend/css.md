@@ -189,14 +189,16 @@
 ### css属性
 1. 常用属性
    * color：前景色，字体颜色
-   * background-color：背景色
-   * background-image：设置元素的背景图片，其会盖在background-color的上面但不是覆盖，不会撑起内容，即当元素没有宽高背景图也就不展示
-     * url()：可以设置多个用逗号隔开，默认显示第一个，当第一个不存在时显示第二个一次类推
-   * background-repeat：默认值为按需重复来覆盖整个背景图片所在区域，最后一个图像会被裁剪（repeat，repeat-x，repeat-y），图像尽可能的重复但不会裁剪（space），铺满整个区域不留空隙，但会根据浏览器的计算进行伸展或收缩（round），不重复（no-repeat）
-   * background-size：背景图片多大就显示多大-默认值（auto）、覆盖即拉伸占满（cover）、铺满宽度或高度等比缩放（contain）、百分比（x% y%）、具体大小（*px *px）
-   * background-position：设置图片位置
-     * 可以输入具体值*px *px
-     * 水平、竖直方向都有三个固定值：center、left、right和center、top、bottom，当只有水平方向值时，竖直方向默认居中
+   * background：为以下几个background的缩写属性，常用改格式是image position/size repeat attachment color，只有在有size时它必须放在position后面，别的都无顺序
+     * background-color：背景色
+     * background-image：设置元素的背景图片，其会盖在background-color的上面但不是覆盖，不会撑起内容，即当元素没有宽高背景图也就不展示
+         * url()：可以设置多个用逗号隔开，默认显示第一个，当第一个不存在时显示第二个一次类推
+     * background-repeat：默认值为按需重复来覆盖整个背景图片所在区域，最后一个图像会被裁剪（repeat，repeat-x，repeat-y），图像尽可能的重复但不会裁剪（space），铺满整个区域不留空隙，但会根据浏览器的计算进行伸展或收缩（round），不重复（no-repeat）
+     * background-size：背景图片多大就显示多大-默认值（auto）、覆盖即拉伸占满（cover）、铺满宽度或高度等比缩放（contain）、百分比（x% y%）、具体大小（*px *px）
+     * background-position：设置图片位置
+         * 可以输入具体值*px *px
+         * 水平、竖直方向都有三个固定值：center、left、right和center、top、bottom，当只有水平方向值时，竖直方向默认居中
+     * background-attachment：背景图片跟随元素一起滚动-默认值（scroll）、背景图片跟随元素以及元素内容一起滚动（local）、背景图片相对于浏览器窗口固定（fixed）
    * font-size：字体大小，单位可以为px，em，rem和百分比等，google默认字体大小为16px
    * display：块级（block）、行内级（inline）、行内块（inline-block）、隐藏（none，元素不再占用空间）、列表的块级显示（list-item）、table中使用的块级（table、table-row-group、table-row、inline-table）
    * width/height：宽度和高度，其对内联元素无效，值为百分比时相对的应该是它的包含块
@@ -204,7 +206,7 @@
    * overflow：用于控制元素溢出时的行为，超出依然显示（visible，默认值），溢出的内容直接裁剪（hidden），溢出的内容被裁剪但是可以通过滚动查看（scroll），根据内容是否溢出决定是否提供滚动机制（auto）
    * overflow-x、overflow-y：效果同上，只是单独确定x或y轴的行为
    * outline：类似于border，但其只是边框的轮廓不会增加元素的大小，经常用在div可以作为调试技巧看页面布局
-   * transform：允许旋转、缩放、倾斜或平移，旋转，旋转方向为顺时针（rotate（-45deg）），移动（translate(120px, 50%)），缩放（scale(2, 0.5)），倾斜（skew(30deg, 20deg)）
+   * transform：允许旋转、缩放、倾斜或平移，旋转，旋转方向为顺时针（rotate（-45deg）），移动（translate(120px, 50%)-百分比时是相对于自身的宽高），缩放（scale(2, 0.5)），倾斜（skew(30deg, 20deg)）
    * box-shadow：盒子阴影效果，inset? && <length>{2,4}&&<color>?
      * length
        * 第一个length：水平方向的偏移，正数往右偏移
@@ -213,6 +215,7 @@
        * 第四个length：四周向外延伸
      * color：设置颜色
      * inset：外框阴影变成内框阴影
+   * cursor：设置光标在元素上面的样式，默认-浏览器决定（auto）、操作系统决定（default）、手型（pointer）、一条竖线（text）
 2. 文本属性（通常子元素会继承）
    * text-decoration：用于设置文字的装饰线。值为：无任何装饰线（none）、上划线（overline）、下划线（underline）、删除线（line-through）
    * text-transform：用于设置文字的大小写转换，值为：没有任何影响（none）、每个单词首字符变为大写（capitalize）、所有字符大写（uppercase）、所有字符小写（lowercase）
@@ -295,6 +298,7 @@
 6. 外边距（margin）：
    * 四个方向：margin-top、padding-right、margin-bottom、padding-left
    * 简写：margin，规律和内边距相同
+   * 值为百分比时是相对于父元素的宽高
    * 上下margin折叠（合并）：块级元素margin的上下会合并两个元素设置的值，即如果上行的元素设置了bottom并且下行设置了top则实际的空间只有一个，但是左右不会产生合联
    * margin-top传递：如果块级元素的顶部线和父元素的底部线重叠，那么margin-top会传递到父元素
    * margin-bottom传递：如果块级元素的底部线和父元素的底部线重叠，并且父元素的高度是auto，那么这个块级元素的margin-bottom值会传递给父元素
@@ -313,6 +317,55 @@
 1. 块级元素和行内块级元素，可以嵌套任意的元素
 2. 行内元素一般只包含行内元素
 3. 特殊情况：p元素不能包含其他块级元素
+### 定位
+1. 标准流（Normal Flow）：在标准流中无论是div还是span都是从左往右，从上到下排，互相之间不存在层叠现象。默认情况下元素都是按照标准流进行排布
+2. 在标准流中，可以使用margin、padding对元素进行定位，但是通常会影响到标准流中其他元素的定位效果，不便于实现元素的层叠的效果
+3. position：除static外，通过left、right、top、bottom来设置元素的具体位置
+    * 静态定位（在标准流中就是静态定位）：static
+    * 相对定位：relative
+        * 相对自身在标准流中的位置，会保留原先占用空间并且不会挤压其它元素的位置
+        * 写百分比时相对于父元素的宽高
+        * 用于不影响其它元素位置的情况下对元素进行微调
+    * 绝对定位：absolute
+      * 设置后和固定定位一样脱离标准流
+      * 向上找父元素直到找到父元素的定位为非static就开始相对于此父元素来做定位，子绝父相
+      * 定位参照对象的宽度=left + right + margin-left + margin-right + 绝对定位元素的实际占用宽度
+      * 定位参照对象的高度=top + bottom + margin-top + margin-bottom + 绝对定位元素的实际占用宽度
+    * 固定定位：fixed
+      * 相对于浏览器的视口进行固定，脱离标准流，不会继续占据原先的位置
+    * 粘性定位元素：sticky
+      * 偏移值不会影响任何其它元素的位置
+      * 总是创建一个新的层叠上下文，即一个sticky元素会固定在理它最近的一个拥有滚动机制的祖先上
+4. 浮动：float
+   * 元素一旦浮动：
+     * 脱离标准流
+     * 浮动元素之间不能层叠，父元素空间不够则换行
+     * 朝着向左或向右方向移动，直到自己的边界紧贴着包含块或者其它浮动元素的边界为止
+     * 如果元素向左（右）浮动，浮动元素的左（右）边界不能超出包含块的左右边界
+     * 浮动元素不能与行内级内容包括块级元素的内容层叠，行内级内容将会被浮动元素推出
+     * 行内级元素、inline-block元素浮动后，其顶部将与所在行的顶部对齐
+     * 浮动元素的顶端不能超过包含块的顶端，也不能超过之前所有浮动元素的顶端
+   * 默认值-不浮动：none
+   * 向左浮动：left
+   * 向右浮动：right
+   * 浮动常用的场景：
+     * 解决行内元素由于换行符产生的空格
+     * 用于布局，布局建议不要使用display：inline-block，因为其会受到里面内容基线的影响
+   * 解决一行排列布局的最后一个元素的margin-right：
+       * 给每一行的最后一个元素总是加一个class通过类选择器去除这个margin-right
+       * 通过伪类选择器，会有兼容性的问题
+       * .container 固定的宽度 > .wrap + 负margin  > 很多item
+5. 层叠关系：通过z-index来设置层叠关系
+    * 标准元素：标准流中的元素时不存在层叠的
+    * 定位元素：定位元素会层叠到标准流元素的上面
+      * 定位元素之间可以使用z-index，前提是定位元素非static
+    * 浮动元素
+    * 层叠从底向上为：标准元素->浮动元素->定位元素
+6. 脱标元素的特点
+    * 可以随意设置高度
+    * 宽高默认由内容决定
+    * 不再受标准流的约束
+    * 不再给父元素汇报宽高数据
 ### 颜色设置（flatuicolors.com）
 1. 英文单词，即基本颜色的关键字，如red、green、black、blue等，但其表现的颜色种类有限
 2. RGB颜色：即以红（red）、绿色（green）、蓝色（blue）三个颜色的通道变化及叠加来得到各式各样的颜色
