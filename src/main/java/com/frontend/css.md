@@ -3,6 +3,7 @@
 2. MDN：https://developer.mozilla.org/zh-CN/
 3. caniuse：https://caniuse.com/#home
 4. css编码： @charset 'utf-8'
+5. 颜色网站：flatuicolors.com
 ### 使用方式
 1. 内联样式：直接以属性的形式写在html标签内 
     ``` 
@@ -192,7 +193,7 @@
    * background：为以下几个background的缩写属性，常用改格式是image position/size repeat attachment color，只有在有size时它必须放在position后面，别的都无顺序
      * background-color：背景色
      * background-image：设置元素的背景图片，其会盖在background-color的上面但不是覆盖，不会撑起内容，即当元素没有宽高背景图也就不展示
-         * url()：可以设置多个用逗号隔开，默认显示第一个，当第一个不存在时显示第二个一次类推
+         * url()：可以设置多个用逗号隔开，默认显示第一个，当第一个不存在时显示第二个依此类推
      * background-repeat：默认值为按需重复来覆盖整个背景图片所在区域，最后一个图像会被裁剪（repeat，repeat-x，repeat-y），图像尽可能的重复但不会裁剪（space），铺满整个区域不留空隙，但会根据浏览器的计算进行伸展或收缩（round），不重复（no-repeat）
      * background-size：背景图片多大就显示多大-默认值（auto）、覆盖即拉伸占满（cover）、铺满宽度或高度等比缩放（contain）、百分比（x% y%）、具体大小（*px *px）
      * background-position：设置图片位置
@@ -207,20 +208,20 @@
    * overflow-x、overflow-y：效果同上，只是单独确定x或y轴的行为
    * outline：类似于border，但其只是边框的轮廓不会增加元素的大小，经常用在div可以作为调试技巧看页面布局
    * transform：允许旋转、缩放、倾斜或平移，旋转，旋转方向为顺时针（rotate（-45deg）），移动（translate(120px, 50%)-百分比时是相对于自身的宽高），缩放（scale(2, 0.5)），倾斜（skew(30deg, 20deg)）
-   * box-shadow：盒子阴影效果，inset? && <length>{2,4}&&<color>?
-     * length
-       * 第一个length：水平方向的偏移，正数往右偏移
-       * 第二个length：垂直方向的偏移，正数往下偏移
-       * 第三个length：模糊半径
-       * 第四个length：四周向外延伸
-     * color：设置颜色
-     * inset：外框阴影变成内框阴影
    * cursor：设置光标在元素上面的样式，默认-浏览器决定（auto）、操作系统决定（default）、手型（pointer）、一条竖线（text）
+   * box-shadow：盒子阴影效果，inset? && <length>{2,4}&&<color>?
+       * length
+         * 第一个length：水平方向的偏移，正数往右偏移
+         * 第二个length：垂直方向的偏移，正数往下偏移
+         * 第三个length：模糊半径
+         * 第四个length：四周向外延伸
+       * color：设置颜色
+       * inset：外框阴影变成内框阴影
 2. 文本属性（通常子元素会继承）
    * text-decoration：用于设置文字的装饰线。值为：无任何装饰线（none）、上划线（overline）、下划线（underline）、删除线（line-through）
    * text-transform：用于设置文字的大小写转换，值为：没有任何影响（none）、每个单词首字符变为大写（capitalize）、所有字符大写（uppercase）、所有字符小写（lowercase）
    * text-indent：首行缩进，值可以为px、em、rem（根元素的字体大小root em）等，在text-indent中时em为此文本自己的字体大小，即1em为一个字的大小
-   * text-align：设置元素内容在元素中的水平方式，其值为左对齐（left）、右对齐（right）、居中（center）、两端对齐但是它对最后一行没有效果要设置最后一行的话要使用text-align-last（justify）
+   * text-align：设置元素内容在元素中的水平对齐方式，其值为左对齐（left）、右对齐（right）、居中（center）、两端对齐但是它对最后一行没有效果要设置最后一行的话要使用text-align-last（justify）
    * letter-spacing：字母间距
    * word-spacing：单词间距
    * word-break：单词默认情况下是不允许断掉的，即超出宽度后也不会换行，可以使用此属性
@@ -266,11 +267,11 @@
 ### 解决行内级元素换行产生空格问题的几种方法
 1. 去除元素之间的空格、换行
 2. 元素间的换行使用注释包裹
-3. 设置父元素的font-size为0，然后再元素中重新设置自己需要的font-size（Safari上不支持）
+3. 设置父元素的font-size为0，然后在元素中重新设置自己需要的font-size（Safari上不支持）
 4. 给元素加float
 ### 盒子模型
 1. html中的每一个元素都可以看做是一个盒子，可以具备四个属性：内容（content），内边距（padding），边框（border）以及外边距（margin）
-2. box-sizing：设置盒子的尺寸计算方式，设置宽度和高度时只是指定内容的宽高，默认值（content-box），设置宽度和高度时是内容+内边距+边框的宽高（border-box）
+2. box-sizing：设置盒子的尺寸计算方式，设置宽度和高度时只是指定内容的宽高，默认值（content-box），实际要的宽度和高度是内容+内边距+边框的宽高（border-box）
 3. 内容属性（content）：
    * width：设置内容宽度
    * min-width：最小宽度
@@ -330,7 +331,7 @@
       * 设置后和固定定位一样脱离标准流
       * 向上找父元素直到找到父元素的定位为非static就开始相对于此父元素来做定位，子绝父相
       * 定位参照对象的宽度=left + right + margin-left + margin-right + 绝对定位元素的实际占用宽度
-      * 定位参照对象的高度=top + bottom + margin-top + margin-bottom + 绝对定位元素的实际占用宽度
+      * 定位参照对象的高度=top + bottom + margin-top + margin-bottom + 绝对定位元素的实际占用高度
     * 固定定位：fixed
       * 相对于浏览器的视口进行固定，脱离标准流，不会继续占据原先的位置
     * 粘性定位元素：sticky
@@ -342,7 +343,7 @@
      * 浮动元素之间不能层叠，父元素空间不够则换行
      * 朝着向左或向右方向移动，直到自己的边界紧贴着包含块或者其它浮动元素的边界为止
      * 如果元素向左（右）浮动，浮动元素的左（右）边界不能超出包含块的左右边界
-     * 浮动元素不能与行内级内容包括块级元素的内容层叠，行内级内容将会被浮动元素推出
+     * 浮动元素不能与行内级内容包括行内块级元素的内容层叠，行内级内容将会被浮动元素推出
      * 行内级元素、inline-block元素浮动后，其顶部将与所在行的顶部对齐
      * 浮动元素的顶端不能超过包含块的顶端，也不能超过之前所有浮动元素的顶端
    * 默认值-不浮动：none
@@ -366,7 +367,7 @@
     * 宽高默认由内容决定
     * 不再受标准流的约束
     * 不再给父元素汇报宽高数据
-### 颜色设置（flatuicolors.com）
+### 颜色设置
 1. 英文单词，即基本颜色的关键字，如red、green、black、blue等，但其表现的颜色种类有限
 2. RGB颜色：即以红（red）、绿色（green）、蓝色（blue）三个颜色的通道变化及叠加来得到各式各样的颜色
    * 十进制表示时每个颜色的取值范围为0~255，表示方法为rgb(0, 0, 0)所有都是0的情况为黑色，所有都为255时为白色
