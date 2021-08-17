@@ -42,7 +42,7 @@
 #### 数据类型
 1. 在计算机中不同的数据所需占用的存储空间不同，为了便于把数据分成所需内存大小不同的数据，充分利用存储空间，于是定义了不同的数据类型
 2. JavaScript是一种弱类型或者动态类型的语言，变量没有数据类型，值才有数据类型，也就是根据值的类型来确认变量的类型，变量的类型可以根据值的类型变化而变化
-3. 简单数据类型
+3. 简单数据类型 (值类型)
    * 数字型（Number）：包含整型和浮点型
      * 最大值（Number.MAX_NUMBER）、最小值(Number.MIN_NUMBER)
      * 特殊值：无穷大(Infinity)、负无穷大(-Infinity)、非数字(NaN)
@@ -54,8 +54,10 @@
    * 布尔型（Boolean）：值为true和false，在参与加法运算时当1和0来计算
    * Undefined：声明了变量但是未赋值，即没有数据类型的变量，NaN、undefined和数字相加最后结果为NaN
    * 空值（Null）：和数字相加等于数字本身
-4. 复杂数据类型
+4. 复杂数据类型（引用类型）
    * object
+   * Array
+   * Date
 5. 使用typeof检测变量当前的值为那种数据类型`typeof num`，在检测Null、对象和数组时结果都为object
 6. 字面量：用来为变量赋值时的常数量
 7. 数据类型转换：
@@ -417,4 +419,162 @@ js引擎在运行js代码的时候分为两步：
    * 包装类型的长度属性：length
    * indexOf('', starterIndex)/lastIndexOf()
    * charAt(index)/charCodeAt(index)/str[index]
+   * concat('str1', 'str2'...)/substr(start, length)/slice(start, end)/substring(start,end)
+   * replace('被替换的字符', '替换为的字符') 只替换第一个字符/split('分隔符')
 8. instanceof运算符用来检测Constructor.prototype是否存在于参数object的原型链上，可以检测数组、对象等
+### DOM-页面文档对象
+#### DOM基础知识
+1. DOM：Document Object Model，是W3C组织推荐的处理可扩展标记语言的标准编程接口，通过这些接口可以改变页面的内容、结构和样式
+2. DOM树，以下三个都是对象
+   * 文档：一个页面就是一个文档，DOM中使用document表示
+   * 元素：页面中的所有标签都是元素，DOM中使用element表示
+   * 节点：网页中的所有内容都是节点（标签、属性、文本、注释等），DOM中使用node表示
+   ![img_3.png](img_3.png)
+3. 获取元素，使用console.dir可以打印返回的元素对象，更好的查看里面的属性和方法
+   * 根据id获取，返回对象：document.getElementById('id')
+   * 根据标签获取，以伪数组的形式返回元素对象的集合：document.getElementByTagName('tagName')，也可以通过父元素来获取：element.getElementByTagName('tagName')
+   * H5新增的方法获取：
+     * 通过类名来获取，返回集合：document.getElementByClassName('className')
+     * 根据选择器获取，返回的是符合条件的第一个元素对象，ie9及以上：document.querySelector('selector')
+     * 根据选中器获取所有元素对象，ie9及以上：document.querySelectorAll('selector')
+   * 快速获取body元素：document.body
+   * 获取html元素：document.documentElement
+4. 事件基础：事件是可以被js侦测到的行为，触发--响应机制
+   * 事件源：事件被触发的对象
+   * 事件类型：如何触发，如鼠标点击、经过、键盘按下
+   * 事件处理程序：通过一个函数赋值的方式完成
+   ``` 
+      // 点击事件绑定
+      // 1.获取事件源
+      var element = doucument.getElementById('id')
+      // 2.绑定事件
+      element.onclick
+      // 3.添加处理程序
+      element.onclick = function() {
+         // 执行代码
+      }
+   ```
+   ![img_4.png](img_4.png)
+5. 操作元素：通过DOM操作改变网页内容、结构和样式，即通过DOM操作元素来改变元素里面的内容、属性等，属性通常都是可读写-即可读取元素中的内容也可以修改
+   * 改变内容，两者都是属性：element.innerText、element.innerHTML
+   * 常用的元素属性：src、href、title、alt、id
+   * 修改表单属性：type、value、checked、selected、disabled
+   * 样式属性操作：
+     * 行内样式操作：[element].style `element.style.fontSize // 样式名为驼峰命名`
+     * 类名样式操作：[element].className
+6. 自定义属性：
+   * [element].getAttribute('属性名')也可获取内置属性
+   * [element].setAttribute('属性名', '属性值')也可修改内置属性
+   * H5自定义属性使用data-开头作为属性名，并可以使用[element].dataset.[data-后面的名字]或[element].dataset['data-后面的名字']如果data-后有多个-连接的字符，那么采取驼峰命名来获取，ie11才支持
+7. 节点操作
+   * 父节点，没有父节点就返回null：[node].parentNode
+   * 子节点，会返回所有子节点包含元素节点、文本节点等等：[node].childNodes
+     * nodeType：1-元素节点，3-文本节点
+   * 获取所有子元素节点：[node].children
+   * 获取第一个子节点：[node].firstChild
+   * 获取最后一个子节点：[node].lastChild
+   * 获取第一个子元素，ie9及以上才支持：[node].firstChildren
+   * 获取最后一个子元素，ie9及以上才支持：[node].lastChildren
+   * 下一个兄弟节点：[node].nextSibling
+   * 上一个兄弟节点：[node].previousSibling
+   * 下一个兄弟元素节点，ie9及以上才支持：[node].nextElementSibling
+   * 上一个兄弟元素节点，ie9及以上才支持：[node].previousElementSibling
+   * 创建元素节点：document.createElement('tagName')
+   * 添加节点：
+     * [node].appendChild(child)
+     * [node].insertBefore(child, '指定元素')
+   * 删除节点：[node].removeChild(child)
+   * 赋值节点：[node].cloneNode()，参数为空默认为false则为浅拷贝-只复制元素没有复制里面的内容，参数为true则为深拷贝会把里面内容一起拷贝
+8. 创建元素还有一种方式为document.write()，其如果在window.onload后调用会导致重绘页面，createElement加appendChild方式创建节点比innerHTML效率会低，但是innerHTML不要用拼接字符串的形式要采用数组拼接的形式
+#### 事件高级
+1. 注册事件
+   * 传统注册方式，特点是注册事件具有唯一性，即一个元素的一个事件只能有一个处理函数，即使写了多个后面注册的会把前面的覆盖掉
+   ``` 
+        // 利用on开头的事件属性
+        <button onclick=""></button>
+        btn.onclick=function(){}
+        btn['onclick']=function(){}
+   ```
+   * 方法监听注册方式，w3c推荐，同一个元素同一个事件可以注册多个监听器，触发时按照注册顺序依次执行，ie9及以上支持，之前的可用attachEvent()代替
+   ``` 
+        // 参数一  事件类型字符串，如click、mouseover等，其不要带on
+        // 参数二  事件处理函数，事件发生时会调用该监听函数
+        // 参数三  可选参数，是一个布尔值，默认为false-处于冒泡阶段，设置为true-处于捕获阶段
+        eventTarget.addEventListener(type, listener[, useCapture])
+   ```
+2. 删除事件
+   ``` 
+      // 传统方式删除事件
+      btn.onclick = null
+   
+      // addEventListener对应的删除事件
+      btn.addEventListener('click', fn)
+      btn.removeEventListener('click', fn)
+   
+      function fn(){}
+   ```
+3. DOM事件流：描述的是从页面中接收事件的顺序。事件发生时会在元素节点之间按照特定的顺序传播，这个传播过程即DOM事件流。
+   * 捕获阶段：由DOM最顶层节点开始，然后逐级向下传播到最具体的元素接收的过程
+   * 当前目标阶段
+   * 冒泡阶段：事件最开始由最具体的元素接收，然后逐级像上传播到DOM最顶层节点的过程
+   ![img_5.png](img_5.png)
+   ``` 
+      // 1. js代码中只能执行捕获或者冒泡其中的一个阶段
+      // 2. onclick和attachEvent只能得到冒泡阶段
+      // 捕获节点会先执行father，后执行son
+      <div class='father'>
+         <div class='son'>son盒子</div>
+      </div>
+   
+      var son = document.querySeletor('.son')
+      son.addEventListener('click', function() {
+         alert('son')
+      }, true) 
+   
+      var father = document.querySeletor('.father')
+      father.addEventListener('click', function() {
+         alert('father')
+      }, true) 
+   
+      // 冒泡阶段会先执行son，再执行father
+      var son = document.querySeletor('.son')
+      son.addEventListener('click', function() {
+         alert('son')
+      }) 
+   
+      var father = document.querySeletor('.father')
+      father.addEventListener('click', function() {
+         alert('father')
+      }) 
+   ```
+4. 实际开发中很少使用事件捕获，更关注事件冒泡
+5. 有些事件没有冒泡，如onblur、onfocus、onmouseenter、onmouseleave
+6. 事件对象：
+   * event就是一个事件对象，在注册函数中使用形参传入
+   * 只有有了事件才会有事件对象，系统自动创建，不需要我们传递参数
+   * 事件对象是一系列和事件相关的数据集合，如鼠标点击则里面包含了鼠标的相关信息、鼠标坐标等，如果是键盘事件则包含了键盘事件的信息
+   * 事件对象可以自己命名，ie9以下要使用window.event
+   * 常见属性和方法
+     * 返回触发事件的对象（标准）：e.target
+     * 返回触发事件的对象（非标准，ie9以下使用）：e.srcElement
+     * 返回事件类型：e.type
+     * 阻止冒泡（非标准，ie9以下使用）：e.cancelBubble
+     * 阻止默认事件（非标准，ie9以下使用）：e.returnValue
+     * 阻止冒泡（标准）：e.stopPropagation()
+     * 阻止默认事件（标准）：e.preventDefault()
+   ``` 
+      son.onclick = function(event) {
+         alert('son')
+      }
+   
+      son.addEventListener('click', function(event) {
+         alert('son')
+      }) 
+   
+      // 自己命名
+      son.addEventListener('click', function(e) {
+         // 兼容性写法
+         e = e || window.event
+         alert('son')
+      }) 
+   ```
