@@ -27,7 +27,7 @@
    * 严格区分大小写
    * 不能是关键字和保留字，如var、if、for等
    * 变量名最好有意义，并且遵守驼峰命名规范
-   * name变量名尽量不要直接使用，在某些浏览器是有使用的
+   * name变量名尽量不要直接使用，在某些浏览器是有使用的，window.name有意义
 3. 变量的使用：
    * 声明变量：`var age;// 声明一个名为age的变量`
    * 赋值：`age = 10; // 给age这个变量赋值为10`
@@ -454,7 +454,6 @@ js引擎在运行js代码的时候分为两步：
          // 执行代码
       }
    ```
-   ![img_4.png](img_4.png)
 5. 操作元素：通过DOM操作改变网页内容、结构和样式，即通过DOM操作元素来改变元素里面的内容、属性等，属性通常都是可读写-即可读取元素中的内容也可以修改
    * 改变内容，两者都是属性：element.innerText、element.innerHTML
    * 常用的元素属性：src、href、title、alt、id
@@ -502,6 +501,7 @@ js引擎在运行js代码的时候分为两步：
         // 参数三  可选参数，是一个布尔值，默认为false-处于冒泡阶段，设置为true-处于捕获阶段
         eventTarget.addEventListener(type, listener[, useCapture])
    ```
+   
 2. 删除事件
    ``` 
       // 传统方式删除事件
@@ -513,6 +513,7 @@ js引擎在运行js代码的时候分为两步：
    
       function fn(){}
    ```
+   
 3. DOM事件流：描述的是从页面中接收事件的顺序。事件发生时会在元素节点之间按照特定的顺序传播，这个传播过程即DOM事件流。
    * 捕获阶段：由DOM最顶层节点开始，然后逐级向下传播到最具体的元素接收的过程
    * 当前目标阶段
@@ -547,8 +548,11 @@ js引擎在运行js代码的时候分为两步：
          alert('father')
       }) 
    ```
+   
 4. 实际开发中很少使用事件捕获，更关注事件冒泡
+
 5. 有些事件没有冒泡，如onblur、onfocus、onmouseenter、onmouseleave
+
 6. 事件对象：
    * event就是一个事件对象，在注册函数中使用形参传入
    * 只有有了事件才会有事件对象，系统自动创建，不需要我们传递参数
@@ -578,3 +582,318 @@ js引擎在运行js代码的时候分为两步：
          alert('son')
       }) 
    ```
+   
+7. 事件委托：也称为事件代理，在jquery里面称为事件委派。
+
+   * 事件委托原理：不是每个子节点单独设置事件监听，而是事件监听器设置在其父节点上，然后利用冒泡原理影响设置每个子节点。
+   * 作用：只操作一次DOM，相当于给每个子节点都添加了事件监听，提高了程序的性能
+
+   ```  html
+   <ur>
+   	<li>h1</li>
+       <li>h1</li>
+       <li>h1</li>
+       <li>h1</li>
+       <li>h1</li>
+       <li>h1</li>
+   </url>
+   <script>
+   	// 核心：给父节点添加侦听器，利用事件冒泡影响每一个子节点
+       var ul = document.querySelector('ul')
+       
+       ul.addEventListener('click', function(e) {
+           // e.target获得触发事件的点击对象
+           e.target.style.backgroundColor = 'pink'
+       })
+   </script>
+   ```
+
+8. 常用的鼠标事件：
+
+   |                       事件                       |   事件名    |
+   | :----------------------------------------------: | :---------: |
+   |                   鼠标点击事件                   |   onclick   |
+   |                   获取焦点事件                   |   onfcus    |
+   |                   失去焦点事件                   |   onblur    |
+   |                   鼠标经过触发                   | onmouseover |
+   |                   鼠标离开触发                   | onmouseout  |
+   |                   鼠标移动触发                   | onmousemove |
+   |                   鼠标弹起触发                   |  onmouseup  |
+   |                   鼠标按下触发                   | onmousedown |
+   | 鼠标右键菜单，通过阻止其默认行为可以阻止右键菜单 | contextmenu |
+   |   鼠标选中，通过阻止其默认行为可以阻止文字选中   | selectstart |
+
+9. 鼠标事件对象（MouseEvent）：
+
+   | 对象属性  |                    返回值                    |
+   | :-------: | :------------------------------------------: |
+   | e.clientX |    返回鼠标相对于浏览器窗口可视区的X坐标     |
+   | e.clientY |    返回鼠标相对于浏览器窗口可视区的Y坐标     |
+   |  e.pageX  | 返回鼠标相对于文档页面的X坐标，IE9及以上支持 |
+   |  e.pageY  | 返回鼠标相对于文档页面的Y坐标，IE9及以上支持 |
+   | e.screenX |        返回鼠标相对于电脑屏幕的X坐标         |
+   | e.screenY |        返回鼠标相对于电脑屏幕的Y坐标         |
+
+10. 常用的键盘事件：执行顺序为down --> press --> up
+
+    * 某个按键被松开时触发：onkeyup
+    * 某个按键被按下时触发：onkeydown
+    * 某个按键被按下时触发，但是它不识别功能键，如ctrl、shift、箭头等：onkeypress
+
+11. 键盘事件对象：
+
+    - 返回键盘的ASCII，keyup和keydown不区分字母大小写，keypress区分：e.keyCode
+
+### BOM-浏览器对象模型
+
+#### 基础
+
+1. 浏览器对象模型（Browser Object Model）提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是window。BOM最初是Netscape浏览器标准的一部分，其包含了DOM。
+
+   ![image-20210818204701193](./image-20210818204701193.png)     
+
+2. window对象是浏览器的顶级对象，它具有双重角色
+
+   - 它是JS访问浏览器窗口的一个接口
+
+   - 它是一个全局对象，定义在全局作用域中的变量、函数都会变成对象的属性和方法，在调用的时候可以省略window，包括alert、document等
+
+     ```  javascript
+     var num = 10
+     console.log(num)
+     
+     function test() {
+     	console.log('test')
+     }
+     
+     window.test()
+     ```
+
+     
+
+#### 常见事件
+
+1. 窗口加载事件：window.onload是窗口（页面）加载事件，当文档内容完全加载完成会触发该事件，包括样式表、图片、flash等的加载
+
+   ```javascript
+   window.onload = function() {}
+   // 或
+   window.addEventListener('load', function() {})
+   // 在不使用该事件时，将js代码直接放在html中的dom元素之前，js中的dom操作是无效的，因为html是从上到下顺序执行，执行js时还没有dom元素
+   ```
+
+2. 窗口加载事件DOMContentLoaded，其仅当DOM加载完成时就触发，不包括样式表、图片、flash等，ie9及以上才支持` document.addEventListener('DOMContentLoaded', function() {})`
+
+3. 窗口调整大小事件
+
+   ```javascript
+   window.onresize = function(){}
+   window.addEventListener('resize', function(){})
+   
+   // 窗口大小属性
+   window.innerWidth
+   window.innerHeight
+   ```
+
+#### 定时器
+
+1. setTimeout
+
+   ``` javascript
+   // window.setTimeout(调用函数, [延时时间-单位未毫秒])
+   // 延迟时间可以省略默认是0
+   // 页面中可能有很多的定时器，经常给定时器添加标识符
+   // 其中的函数为回调函数（callback），等待时间到了才去调用这个函数
+   var timer = setTimeout(function(){}, 2000)
+   
+   // 停止定时器  window.clearTimeout(定时器的标识符)
+   clearTimeout(timer)
+   ```
+
+2. setInterval
+
+   ```javascript
+   // window.setInterval(调用函数, [间隔时间-单位毫秒])
+   // 间隔的毫秒数省略默认是0
+   // 清除定时器同样要使用到它的标识符
+   var timer = setInterval(function(){}, 1000)
+   
+   // 清除定时器  window.clearInterval(定时器的标识符)
+   clearIntertval(timer)
+   ```
+
+#### this指向问题
+
+1. this的指向在函数定义的时候是确定不了的，只有函数执行的时候才能确定this到底指向谁，一般情况下this的最终指向是那个调用它的对象
+
+   ``` javascript
+   // 1. 全局作用域或者普通函数中this指向全局对象window（定时器里面的this指向也是window），实际上只是我们在进行这些函数调用时省略了window.而已
+   console.log(this);
+   
+   function fn() {
+       console.log(this)
+   }
+   
+   // 实际上省略了window，完整形式为window.fn()
+   fn();
+   
+   // window.setTimeout()
+   setTimeout(function() {
+       console.log(this)
+   }, 1000)
+   ```
+
+2. 方法调用中谁调用this就指向谁
+
+   ```javascript
+   // 2. 方法调用中谁调用this就指向谁
+   var o = {
+       sayHi: function() {
+           // this指向o
+           console.log(this)
+       }
+   }
+   
+   btn.addEventListener('click', function() {
+       // this指向btn
+       console.log(this)
+   })
+   ```
+
+3. 构造函数中的this指向构造函数的实例
+
+   ``` javascript
+   // 3. 构造函数中的this指向构造函数的实例
+   function Fun() {
+       // this指向的是fun实例对象
+       console.log(this)
+   }
+   
+   var fun = new Fun()
+   ```
+
+#### JS执行机制
+
+1. JS的一大特点就是单线程，即同一个事件只能做一件事。这是因为JS这门脚本语言诞生的使命所致，其是为处理页面中用户的交互及操作DOM而诞生，自然在对某个DOM元素进行添加和删除操作时，不能同时进行，应该先进行添加，之后再删除。
+
+2. 单线程就意味着所有任务需要排队，前一个任务结束才会执行后一个任务。这样所导致的问题是：如果js执行的时间过长，可能就会造成页面的渲染不连贯，导致页面渲染加载阻塞的感觉。
+
+   ``` javascript
+   // 例如一个定时任务为10秒之后执行，那么如果都是同步执行的话，其之后的所有代码都将等待十秒，这是无法接受的
+   setTimeout(function() {
+   	console.log(1)
+   }, 10000)
+   
+   console.log(2)
+   ```
+
+3. 同步和异步：
+
+   - 同步：前一个任务结束后再执行后一个任务，程序执行顺序与任务的排列顺序是一致的、同步的
+   - 异步（js中的异步并非真正的异步，理解为非阻塞比较合适，通过把回调函数放入任务队列来实现）：在做某一件事时，因为此事需要花费很长事件，那么在等待这件事结束前，还可以去处理其他事情
+
+4. 执行中的线程：
+
+   * 主线程：也就是js引擎执行的线程，这个线程只有一个，页面渲染、函数处理都在这个主线程上执行
+   * 工作线程：也称幕后线程，这个线程可能存在于浏览器或js引擎内，与主线程是分开的，处理读取、网络请求等异步事件，执行完异步操作后将结果构造成js对象放回主线程的任务队列中
+
+   ![image-20210818232920991](image-20210818232920991.png)
+
+5. 同步任务都在主线程上执行，形成一个执行栈，JS的异步是通过回调函数实现，放在任务队列中，一般而言，异步任务又以下三种类型：
+
+   - 普通事件，如click、resize等
+   - 资源加载，如load、error等
+   - 定时器，包括setInterval、setTimeout等
+
+   ``` javascript
+    // 虽然定时器参数为0但是打印结果仍然是1、2、3
+    console.log(1)
+   
+    // setTimout也是同步的，但其中的回调函数是异步去回调的
+    setTimeout(function(){
+        console.log(3)
+    }, 0)
+   
+    console.log(2)
+   ```
+
+   ![image-20210818221218812](image-20210818221218812.png)
+
+6. 执行机制：
+
+   - 先执行执行栈中的同步任务
+   - 异步任务（回调函数）放入任务队列中
+   - 一旦执行栈中的所有同步任务执行完毕，系统就会按次序读取任务队列中的异步任务，于是被读取的异步任务结束等待状态，进入执行栈，开始执行
+   - 上述过程的不断重复就是Event Loop（事件循环）
+
+7. task分为两大类，分别是Macro Task（宏任务）和Micro Task（微任务），宏任务的回调放到宏任务的Event Queue中，微任务的回调放到微任务的Event Queue中，并且宏任务结束后，都要清空所有的微任务Event Queue，宏任务也就是我们常说的task
+
+   - 宏任务主要包含：script（整体代码）、setTimeout、setInterval、I/O、UI交互事件、setImmediate（Node.js环境）等
+   - 微任务主要包含：Promise、MutaionObserver、process.nextTick（Node.js环境）等
+   - setTimeout/Promise等API便是任务源，而进入任务队列的是由他们制定的具体执行任务即回调函数，来自不同任务源的任务会进入到不同的任务队列
+   - microtask的回调会优先于macrotask回调执行，所以如果有需要优先执行的逻辑可以放入microtask队列会比task更早执行
+
+8. 为了利用多核CPU的计算能力，HTML5提出了Web Worker标准，允许JavaScript脚本创建多个线程。但是子线程完全受主线程控制，且不得操作DOM。所以这个新标准并没有改变JS单线程的本质
+
+
+#### location对象
+
+1. URL（Uniform Resource Locator）：统一资源定位符是互联网标准资源的地址，互联网上的每个文件都有一个唯一的URL，它包含的信息指出了文件的位置以及浏览器应该怎么处理它。
+
+   ``` 
+   // URL的一般语法为 protocol://host[:port]/path/[?query]#fragment
+   // protocol：通信协议  
+   // host：主机（域名） 
+   // port：端口号，省略是为默认端口，http为80  
+   // path：路径由零个或多个斜杆分隔开的字符串，一般用来表示主机上的一个目录或文件地址  // query：参数，以键值对形式通过&符号分隔开
+   // fragment：片段，#后面内容常见于链接或者锚点
+   http://www.baidu.com/index.html?name=andy&age=18#link
+   ```
+
+2. location对象的属性
+
+   | location对象属性  |              返回值              |
+   | :---------------: | :------------------------------: |
+   |   location.href   |       获取或者设置整个URL        |
+   |   location.host   |         返回主机（域名）         |
+   |   location.port   | 返回端口号，如果未写返回空字符串 |
+   | location.pathname |             返回路径             |
+   |  location.search  |             返回参数             |
+   |   location.hash   |       返回片段，#后面内容        |
+
+3. location对象的方法
+
+   |   方法    |                           返回值                           |
+   | :-------: | :--------------------------------------------------------: |
+   | assign()  |  跟href一样，可以跳转页面，也称为重定向，记录历史可以后退  |
+   | replace() |       替换当前页面，因为不记录历史，所以不能后退页面       |
+   | reload()  | 重新加载页面，相当于刷新，如果参数为true强制刷新（ctr+F5） |
+
+#### navigator对象
+
+​		navigator对象包含有关浏览器的信息，最常用的是userAgent，该属性可以返回由客户机发送服务器的user-agent头部值
+
+![image-20210819000143038](image-20210819000143038.png)
+
+#### history对象
+
+​		window对象提供了一个history对象与浏览器历史记录进行交互，该对象包含用户访问过的URL。
+
+| 对象方法  |                        作用                        |
+| :-------: | :------------------------------------------------: |
+|  back()   |                        后退                        |
+| forwark() |                        前进                        |
+|   go()    | 前进后退都可以，参数为1前进1个页面，-1后退一个页面 |
+
+#### offset
+
+​		offset即偏移量，使用offset相关属性可以动态的得到该元素的位置、大小等
+
+|      offset属性      |                             作用                             |
+| :------------------: | :----------------------------------------------------------: |
+| element.offsetParent | 返回作为该元素带有定位的父级元素，如父级都没有定位则返回body |
+|  element.offsetTop   |            返回元素相对带有定位父元素上方的偏移量            |
+|  element.offsetLeft  |            返回元素相对带有定位父元素左边框的偏移            |
+| element.offsetWidth  |    返回自身包括padding、border、内容区域的宽度，不带单位     |
+| element.offsetHeight |    返回自身包括padding、border、内容区域的高度，不带单位     |
+
