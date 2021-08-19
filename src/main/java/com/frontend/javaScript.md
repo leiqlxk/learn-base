@@ -610,18 +610,20 @@ js引擎在运行js代码的时候分为两步：
 
 8. 常用的鼠标事件：
 
-   |                       事件                       |   事件名    |
-   | :----------------------------------------------: | :---------: |
-   |                   鼠标点击事件                   |   onclick   |
-   |                   获取焦点事件                   |   onfcus    |
-   |                   失去焦点事件                   |   onblur    |
-   |                   鼠标经过触发                   | onmouseover |
-   |                   鼠标离开触发                   | onmouseout  |
-   |                   鼠标移动触发                   | onmousemove |
-   |                   鼠标弹起触发                   |  onmouseup  |
-   |                   鼠标按下触发                   | onmousedown |
-   | 鼠标右键菜单，通过阻止其默认行为可以阻止右键菜单 | contextmenu |
-   |   鼠标选中，通过阻止其默认行为可以阻止文字选中   | selectstart |
+   |                       事件                       |    事件名    |
+   | :----------------------------------------------: | :----------: |
+   |                   鼠标点击事件                   |   onclick    |
+   |                   获取焦点事件                   |    onfcus    |
+   |                   失去焦点事件                   |    onblur    |
+   |               鼠标经过触发，会冒泡               | onmouseover  |
+   |  鼠标经过触发，其只会在进过自身才触发，不会冒泡  | onmouseenter |
+   |                鼠标离开触发，冒泡                |  onmouseout  |
+   |              鼠标离开时触发，不冒泡              | onmouseleave |
+   |                   鼠标移动触发                   | onmousemove  |
+   |                   鼠标弹起触发                   |  onmouseup   |
+   |                   鼠标按下触发                   | onmousedown  |
+   | 鼠标右键菜单，通过阻止其默认行为可以阻止右键菜单 | contextmenu  |
+   |   鼠标选中，通过阻止其默认行为可以阻止文字选中   | selectstart  |
 
 9. 鼠标事件对象（MouseEvent）：
 
@@ -693,7 +695,12 @@ js引擎在运行js代码的时候分为两步：
    // 窗口大小属性
    window.innerWidth
    window.innerHeight
+   
+   // 整个页面滚动的距离
+   window.pageYOffset
    ```
+   
+4. 滚动条事件onscroll
 
 #### 定时器
 
@@ -885,7 +892,7 @@ js引擎在运行js代码的时候分为两步：
 | forwark() |                        前进                        |
 |   go()    | 前进后退都可以，参数为1前进1个页面，-1后退一个页面 |
 
-#### offset
+#### offset属性
 
 ​		offset即偏移量，使用offset相关属性可以动态的得到该元素的位置、大小等
 
@@ -896,4 +903,42 @@ js引擎在运行js代码的时候分为两步：
 |  element.offsetLeft  |            返回元素相对带有定位父元素左边框的偏移            |
 | element.offsetWidth  |    返回自身包括padding、border、内容区域的宽度，不带单位     |
 | element.offsetHeight |    返回自身包括padding、border、内容区域的高度，不带单位     |
+
+#### client属性
+
+​		使用client的相关属性来获取元素可视区的相关信息
+
+|      client属性      |                             作用                             |
+| :------------------: | :----------------------------------------------------------: |
+|  element.clientTop   |                     返回元素上边框的大小                     |
+|  element.clientLeft  |                     返回元素左边框的大小                     |
+| element.clientWidth  | 返回自身包括padding、内容区宽度，不含边框且不含单位的宽度数值 |
+| element.clientHeight | 返回自身包括padding、内容区高度，不含边框且不含单位的高度数值 |
+
+#### 立即执行函数
+
+​		不需要调用，立马自己执行
+
+``` javascript
+// 本质就是使用后面的括号直接调用里面的匿名函数，里面是不是匿名函数都没有关系
+(function() {})()
+(function(){}())
+
+// 其最大的作用就是独立创建一个作用域，里面所有的变量都是局部变量，不会有命名冲突的问题
+// 可以使用这种方式返回值给全局变量，可以构建一个类似于模块化开发的模式
+(function(a, b){
+    console.log(a, b)
+})(a, b)
+```
+
+#### scroll属性
+
+​		scroll的相关属性可以动态的得到该元素的大小、滚动距离等
+
+|      scroll属性      |                  作用                  |
+| :------------------: | :------------------------------------: |
+|  element.scrollTop   |     返回被卷去的上侧距离，不带单位     |
+|  element.scrollLeft  |     返回被卷去的左侧距离，不带单位     |
+| element.scrollWidth  | 返回自身实际的宽度，不含边框，不带单位 |
+| element.scrollHeight |  返回自身实际高度，不含边框，不带单位  |
 
