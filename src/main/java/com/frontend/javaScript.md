@@ -239,7 +239,7 @@
    ```  
         // 通过返回值把结果返回给调用者，
         // return 后直接终止函数，返回调用处，也是函数的正常出口，没有返回值的方法相当return undefined
-        // return 只能返回一个变量
+        // return 只能返回一个变量，h
         function 函数名() {
               return 需要返回的结果
         } 
