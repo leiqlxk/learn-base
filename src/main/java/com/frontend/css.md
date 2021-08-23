@@ -6,11 +6,11 @@
 5. 颜色网站：flatuicolors.com
 ### 使用方式
 1. 内联样式：直接以属性的形式写在html标签内 
-    ``` 
+    ``` html
         <div style="color:red;">div</div>
     ```
 2. 内联样式表：放在head元素内集中管理
-    ``` 
+    ``` html
         <head>
             <style type="text/css">
                 div {
@@ -20,10 +20,10 @@
         </head>
     ```
 3. 外联样式表：通过link标签或@imort引入的外部css文件
-    ```
+    ```html
        <head>
            <link rel="stylesheet" href="./test.css"/>
-   
+      
            <style type="text/css">
                 @import url(./test.css)
            </style>
@@ -31,7 +31,7 @@
     ```
 ### css基础选择器
 1. 通配选择器：通配选择器匹配所有元素,其可以和任意选择器一起使用，但和直接使用其他选择器效果一样，如*.warning和.warning效果完全相同
-    ``` 
+    ``` html
         <style type="text/css">
             *[lang^=en]{color:green;}
             *.warning {color:red;}
@@ -47,28 +47,28 @@
         </style>
     ```
 2. 元素选择器：通过节点名称匹配元素
-   ``` 
-      元素 {样式声明 }
+   ``` css
+      // 元素 {样式声明 }
       span {
            background-color: DodgerBlue;
            color: #ffffff;
       }
    ```
 3. 类选择器：过元素上的class属性来匹配以.开始
-     ``` 
+     ``` html
         <style type="text/css">
             .类名 {样式声明 }
-   
+      
             .class-name {
                 color: red;
              }
         </style>
     ```
 4. id选择器：通过元素上的id属性来匹配以#开头
-     ``` 
+     ``` html
         <style type="text/css">
             #id属性值 {样式声明 }
-   
+      
             #id {
                 color: red;
              }
@@ -83,7 +83,7 @@
    * [attr$=value]：表示带有以 attr 命名的属性，且属性值是以 value 结尾的元素
    * [attr*=value]：表示带有以 attr 命名的属性，且属性值至少包含一个 value 值的元素
    * [attr operator value i]：在属性选择器的右方括号前添加一个用空格隔开的字母 i（或 I），可以在匹配属性值时忽略大小写
-   ``` 
+   ``` css
    /* 存在title属性的<a> 元素 */
    a[title] {
    color: purple;
@@ -110,7 +110,7 @@
    }
    ```
 6. 选择器列表（并集选择器或并集组合器以,隔开）：选择所有能被列表中的任意一个选择器选中的
-   ``` 
+   ``` css
    element, element, element { style properties }
    /* 选择所有 <span> 和 <div> 元素 */
    span, div {
@@ -118,34 +118,34 @@
    }
    ```
 7. 交集选择器
-   ```
+   ```css
    选择器直接连接，中间无空格如下表示两个选择器同时满足
    selector1selector2{
    }
    ```
 8. 后代选择器：通常用单个空格表示，组合了两个选择器，如果第二个选择器匹配的元素具有与第一个选择器匹配的祖先（父母、父母的父母等）元素，则它们被选则
-   ``` 
+   ``` css
    selector1 selector2 {
    /* property declarations */
    }
    ```
 9. 子选择器：当使用>选择符分隔两个元素时，它只会匹配那些作为第一个元素的直接后代（子元素）的第二元素
-   ``` 
+   ``` css
    元素1 > 元素2 {样式声明 }
    div > span {
    background-color: DodgerBlue;
    }
    ```
 10. 通用兄弟选择器：位置无须紧邻，只须同层级，A~B 选择A元素之后所有同层级B元素。
-    ``` 
+    ``` css
     p ~ span {
     color: red;
     }
     ```
 11. 相邻兄弟选择器：以+分隔两个选择器，当第二个元素紧跟在第一个元素之后，并且两个元素都是同属于同一个父元素，则第二个元素被选中
-    ```
+    ```css
     former_element + target_element { style properties }
-   
+      
     /* 图片后面紧跟着的段落将被选中 */
     img + p {
     font-style: bold;
@@ -336,7 +336,7 @@
       * 相对于浏览器的视口进行固定，脱离标准流，不会继续占据原先的位置
     * 粘性定位元素：sticky
       * 偏移值不会影响任何其它元素的位置
-      * 总是创建一个新的层叠上下文，即一个sticky元素会固定在理它最近的一个拥有滚动机制的祖先上
+      * 总是创建一个新的层叠上下文，即一个sticky元素会固定在离它最近的一个拥有滚动机制的祖先上
 4. 浮动：float
    * 元素一旦浮动：
      * 脱离标准流
