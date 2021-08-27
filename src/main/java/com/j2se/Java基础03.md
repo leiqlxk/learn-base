@@ -282,10 +282,11 @@ public class BubbleSort {
 
 #### 4.2 Arrays常用方法
 
-| 方法名                                 | 说明                                                         |
-| -------------------------------------- | ------------------------------------------------------------ |
-| public static void sort(int[] a)       | 将指定的数组按升序排序。                                     |
-| public static String toString(int[] a) | 返回指定数组内容的字符串表示形式。 字符串表示由数组元素的列表组成，用方括号括起来（ `"[]"` ）。 相邻元素由字符`", "` （逗号后跟空格）分隔。 |
+| 方法名                                   | 说明                                                         |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| public static void sort(int[] a)         | 将指定的数组按升序排序。                                     |
+| public static String toString(int[] a)   | 返回指定数组内容的字符串表示形式。 字符串表示由数组元素的列表组成，用方括号括起来（ `"[]"` ）。 相邻元素由字符`", "` （逗号后跟空格）分隔。 |
+| public static <T> List<T> asList(T... a) | 返回由指定数组支持的固定大小的列表，其只是指定数组的列表视图，并不是真正的列表，无列表的add和remove方法 |
 
 ### 5. 基本类型包装类
 
@@ -1017,3 +1018,90 @@ public interface Generic<T> {}
 
 - 类型通配符下限：**<? super 类型>**
 - List<? super Number>：表示类型是**Number或者父类型**
+
+### 7. 可变参数
+
+可变参数又称参数个数可变，用作方法的形参出现，那么方法参数个数就是可变的。
+
+- 可变参数其实是一个数组
+- 如果一个方法有多个参数，包含可变参数，**可变参数要放在最后**
+
+```java
+// 修饰符 返回值类型 方法名(数据类型... 方法名){}
+// 内部会将方法调用时传入的参数封装成一个数组
+public static sum(int... a){}
+```
+
+### 8. Map
+
+#### 8.1 概述
+
+- Map<K, V>是一个接口，K是键的类型，V是值的类型
+- 将键映射到值的对象，不能包含重复的键，每个键可以映射到最多一个值
+
+```java
+Map<String, String> map = new HashMap<String, String>();
+
+map.put("01", "curry");
+map.put("02", "kobe");
+map.put("03", "james");
+map.put("03", "allen");
+
+System.out.println(map);
+```
+
+#### 8.2 Map集合的基本功能
+
+| 方法名                              | 说明                                 |
+| ----------------------------------- | ------------------------------------ |
+| V put(K key,V value)                | 添加元素                             |
+| V remove(Object  key)               | 根据键删除键值对元素                 |
+| void clear()                        | 移除所有的键值对元素                 |
+| boolean contrainsKey(Object key)    | 判断集合是否包含指定的键             |
+| boolean containsValue(Object value) | 判断集合是否包含指定的值             |
+| boolean isEmpty()                   | 判断集合是否为空                     |
+| int size()                          | 集合的长度，也就是集合中键值对的个数 |
+
+#### 8.3 Map集合的获取功能
+
+| 方法名                          | 说明                     |
+| ------------------------------- | ------------------------ |
+| V get(Object key)               | 根据键获取值             |
+| Set<K> keySet()                 | 获取所有键的集合         |
+| Collection<V> values()          | 获取所有值的集合         |
+| Set<Map.Entry<K, V>> entrySet() | 获取所有键值对对象的集合 |
+
+#### 8.4 Map集合的遍历
+
+```java
+Map<String, String> map = new HashMap<String, String>();
+
+map.put("01", "curry");
+map.put("02", "kobe");
+map.put("03", "james");
+map.put("03", "allen");
+
+Set<String> keySet = map.keySet();
+for(String key : keySet) {
+    System.out.println(map.get(key));
+}
+
+Set<Map.Entry<String, String>> entrySet = map.entrySet();
+for(Map.Entry<String, String> entry : entrySet) {
+    System.out.println(entry.getKey() + ", " + entry.getVlue());
+}
+```
+
+### 9. Collections
+
+Collections类是针对集合操作的工具类。
+
+常用方法有：
+
+| 方法                                                         | 说明                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| public static <T extends [Comparable](https://www.apiref.com/java11-zh/java.base/java/lang/Comparable.html)<? super T>> void sort([List](https://www.apiref.com/java11-zh/java.base/java/util/List.html)<T> list) | 根据其元素的[natural ordering](https://www.apiref.com/java11-zh/java.base/java/lang/Comparable.html) ，将指定列表按升序排序。 |
+| public static <T> void sort(List<T> list, Comparator<? super T> c) | 根据指定比较器引发的顺序对指定列表进行排序。                 |
+| public static void reverse(List<?> list)                     | 反转指定列表中元素的顺序。                                   |
+| public static void shuffle(List<?> list)                     | 使用默认的随机源随机置换指定的列表。                         |
+
