@@ -414,3 +414,554 @@ public interface MyInterface {
 ```
 
 ## 十八、 方法引用
+
+### 1. 方法引用初识
+
+```java
+public interface Printable {
+
+    void printString(String s);
+}
+
+public class PrintableDemo {
+
+    public static void main(String[] args) {
+        // lambda表达式
+        usePrintable(s -> System.out.println(s));
+
+        // lambda表达式结合方法引用
+        // 当lambda表达式代码块中的操作有现成的实现方案，没有必要自己再实现一遍，可以直接引用该方法
+        // 方法引用符：::
+        // 可推导的就是可引用的，隐含的就是将lambda表达式的参数传递给了方法
+        usePrintable(System.out::println);
+    }
+
+    private static void usePrintable(Printable p) {
+        p.printString("hell, java");
+    }
+}
+```
+
+### 2. 方法引用符
+
+**::**该符号位引用运算符，而它所在的表达式被称为方法引用
+
+推导与省略
+
+- 如果使用Lambda，那么根据“可推导就是可省略”的原则，无需指定参数类型，也无需指定重载形式，它们都将被自动推导
+- 如果使用方法引用，也是同样可以根据上下文进行推导
+- 方法引用是Lambda的孪生兄弟，即Lambda表达式中的操作有现场方案就可用方法引用替代
+
+### 3. Lambda表达式支持的方法引用
+
+#### 3.1 引用类方法（实例方法）
+
+```java
+// 类名::静态方法
+// Lambda表达式被类方法替代的时候，它的形式参数全部被传递给静态方法作为参数
+// Integer::parseInt
+```
+
+#### 3.2 引用对象的实例方法
+
+```java
+// 对象::成员方法
+// Lambda表达式被对象实例方法替代的时候，它的形式参数全部被传递给该方法作为参数
+// "HelloWorld"::toUppercase
+// 接口定义
+public interface Printer {
+    void printUpperCase(String s);
+}
+
+// 实现操作的类
+public class PrintString {
+
+    public void printUpper(String s) {
+        System.out.println(s.toUpperCase());
+    }
+}
+
+public class PrinterDemo {
+
+    public static void main(String[] args) {
+        usePrinter(s -> System.out.println(s.toUpperCase()));
+
+        // 使用对象实例方法引用
+        usePrinter(new PrintString()::printUpper);
+    }
+
+    private static void usePrinter(Printer p) {
+        p.printUpperCase("hello, java");
+    }
+}
+```
+
+#### 3.3 引用类的实例方法
+
+```java
+// 类名::成员方法
+// Lambda表达式被类的实例方法替代的时候，它的形式参数全部被传递给该方法作为参数
+// 第一个参数作为调用者
+// 后面的参数全部传递给方法作为参数
+// String::substring
+public interface MyString {
+    String mySubString(String s, int x, int y);
+}
+
+public class MyStringDemo {
+    public static void main(String[] args) {
+        useMyString((s, x, y) -> s.substring(x, y));
+
+        // 使用类的实例方法
+        useMyString(String::substring);
+    }
+
+    private static void useMyString(MyString myString) {
+        String s = myString.mySubString("hello, java", 0, 6);
+        System.out.println(s);
+    }
+}
+```
+
+#### 3.4 引用构造器
+
+```java
+// 类名::new
+// Lambda表达式被构造器方法替代的时候
+// Student::new
+public interface StrundentBuilder {
+    Student build(String name, Integer age);
+}
+
+public class StudentDemo {
+
+    public static void main(String[] args) {
+        useStudentBuilder((s, i) -> new Student(s, i));
+
+        // 引用构造器方法替代
+        useStudentBuilder(Student::new);
+    }
+
+    private static void useStudentBuilder(StrundentBuilder s) {
+        Student curry = s.build("curry", 18);
+        System.out.println(curry);
+    }
+}
+```
+
+## 十九、 函数式接口
+
+### 1. 概述
+
+函数式接口：有且仅有一个抽象方法的接口
+
+Java中的函数式编程体现就是Lambda表达式，所以函数式接口就是可以适用于Lambda使用的接口，只有确保接口中有且仅有一个抽象方法，Java中的Lambda才能顺利地进行推导
+
+```java
+// 该注释注明该接口为函数式接口，并会校验该接口是否符合函数式接口的标准
+// 建议都加上该注解，可以帮助识别是否为函数式接口
+@FunctionalInterface
+public interface MyInterface {
+    void show();
+}
+
+public class MyInterfaceDemo {
+    public static void main(String[] args) {
+        // 作为局部变量使用
+        MyInterface my = () -> System.out.println("函数式接口");
+
+        my.show();
+    }
+}
+```
+
+### 2. 函数式接口作为方法的参数
+
+```java
+public class RunnableDemo {
+
+    public static void main(String[] args) {
+        // 采用匿名内部类实现
+        startThread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("匿名内部类实现");
+            }
+        });
+
+        // 采用lambda表达式作为方法参数实现
+        startThread(() -> System.out.println("lambda表达式实现"));
+    }
+
+    // Runnable为函数式接口
+    private static void startThread(Runnable r) {
+        /*Thread t = new Thread(r);
+        t.start();*/
+        new Thread(r).start();
+    }
+}
+```
+
+### 3. 函数式接口作为方法的返回值
+
+```java
+public class ComparatorDemo {
+
+    public static void main(String[] args) {
+        List<String> arry = new ArrayList<>();
+
+        arry.add("aaa");
+        arry.add("a");
+        arry.add("aa");
+        arry.add("aaaa");
+        arry.add("aaaaa");
+
+        System.out.println("排序前：" + arry);
+
+        arry.sort(getComparator());
+        System.out.println("排序后：" + arry);
+    }
+
+    // 匿名内部类实现
+    /*private static Comparator<String> getComparator() {
+        return new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.length() - o2.length();
+            }
+        };
+    }*/
+
+    // lambda表达式实现
+    private static Comparator<String> getComparator() {
+        // return Comparator.comparingInt(String::length);
+        return (o1, o2) -> o1.length() - o2.length();
+    }
+}
+```
+
+### 4. 常用的函数式接口
+
+Java 8在java.util.function包下预定义了大量的函数式接口
+
+以下为四个常用接口：
+
+- Supplier接口
+  - 主要是用来生成数据，方法：**get()**，返回值为泛型
+  - Supplier<T>接口也被称为生产型接口，如果我们指定了接口的泛型是什么类型，那么接口中的get方法就会生产什么类型的数据
+- Consumer接口
+  - void accept(T t)：对给定的参数执行此操作
+  - default Consumer<T> andThen(Consumer after)：返回一个组合的Consumer，一次执行此操作，然后执行after操作
+  - 此接口也被称为消费型接口，它消费的数据的数据类型为泛型执行
+- Predicate接口
+  - boolean test(T t)：对给定的参数进行判断（判断逻辑由Lambda表达式实现，返回一个布尔值）
+  - default Predicate<T> negate()：返回一个逻辑的否定，对应非
+  - default Predicate<T> and(Predicate other)：返回一个组合判断，对应短路与
+  - default Predicate<T> or(Predicate other)：返回一个组合判断，对应短路或
+  - 此接口通常用于判断参数是否满足指定的条件
+- Function接口
+  - R apply(T t)：将此函数应用于给定的参数
+  - default <V> Function andThen(Function after)：返回一个组合函数，首先该函数应用于输入，然后将after函数应用于结果
+  - 此接口通常用于对参数进行处理，转换（处理逻辑由Lambda表达式实现），然后返回一个新的值
+
+## 二十、 Stream流
+
+### 1. 初识
+
+```java
+List<String> list = new ArrayList<>();
+
+list.add("zhangsan");
+list.add("lisi");
+list.add("wangwu");
+list.add("zhaoliu");
+
+// Stream流把真正的函数式编程风格引入到了java中
+// 将集合中z开头的元素存储到一个新的集合
+List<String> zList = list.stream().filter(s -> s.startsWith("z")).collect(Collectors.toList());
+
+System.out.println(zList);
+```
+
+### 2. Stream流的使用
+
+- 生成流
+  - 通过数据源(集合，数组等)生成流：`list.stream`
+- 中间操作
+  - 一个流后面可以跟随零个或多个中间操作，其目的主要是打开流，做出某种程度的数据过滤/映射，然后返回一个新的流交给下一个操作使用：`filter()`
+- 终结操作
+  - 一个流只能有一个终结操作，当这个操作执行后，流就被使用“光”了，无法再被操作，所以这必定是流的最后一个操作：`forEach()`
+
+### 3. Stream流的生成方式
+
+常见的生成方式：
+
+- Collection体系的集合可以使用默认方法`stream()`生成流
+
+- Map体系的集合间接的生成流
+
+- 数组可以通过Stream接口的静态`of(T… values)`生成流
+
+  ```java
+  // Collection体系生成流
+  List<String> list = new ArrayList<>();
+  HashSet<String> set = new HashSet<>();
+  
+  Stream<String> listStream = list.stream();
+  Stream<String> setStream = set.stream();
+  
+  // Map体系的集合间接生成流
+  HashMap<String, Integer> map = new HashMap<>();
+  Stream<String> keyStream = map.keySet().stream();
+  Stream<Integer> valueStream = map.values().stream();
+  Stream<Map.Entry<String, Integer>> entryStream = map.entrySet().stream();
+  
+  // 数组生成流
+  String[] strings = new String[20];
+  Stream<String> stringStream = Stream.of(strings);
+  ```
+
+### 4. Stream流的常见中间操作方法
+
+| 方法名                                                       | 说明                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Stream<T> filter(Predicate predicate)                        | 用于对流中的数据进行过滤                                     |
+| Stream<R> map(Function<? super T,? extends R> mapper)        | 返回一个流，该流包含将给定函数应用于此流的元素的结果         |
+| IntStream mapToInt(ToIntFunction<? super T> mapper)          | 返回`IntStream`其中包含将给定函数应用于此流的元素的结果      |
+| Stream<T> limit(long maxSize)                                | 返回由此流的元素组成的流，截取前指定个参数                   |
+| Stream<T> skip(long n)                                       | 在丢弃流的前`n`个元素后，返回由此流的其余元素组成的流        |
+| static <T> Stream<T> concat(Stream<? extends T> a, Stream<? extends T> b) | 合并a和b两个流为一个流                                       |
+| Stream<T> distinct()                                         | 返回由此流的不同元素（根据[`Object.equals(Object)`](https://www.apiref.com/java11-zh/java.base/java/lang/Object.html#equals(java.lang.Object)) ）组成的流 |
+| Stream<T> sorted()                                           | 返回由此流的元素组成的流，按照自然顺序排序                   |
+| Stream<T> sorted(Comparator<? super T> comparator)           | 返回由此流的元素组成的流，根据提供的`Comparator`进行排序     |
+
+### 5. Stream流的常见终结操作方法
+
+| 方法名                                   | 说明                     |
+| ---------------------------------------- | ------------------------ |
+| void forEach(Consumer<? super T> action) | 对此流的每个元素执行操作 |
+| long count()                             | 返回此流中元素的数量     |
+
+### 6. Stream流的收集操作（将流又转回集合）
+
+- R collect(Collector collector)：收集方法的参数是一个Collector接口
+- 工具类Collectors提供了具体的收集方式：
+  - public static <T> Collector toList()：把元素收集到List集合中
+  - public static <T> Collector toSet()：把元素收集到Set集合中
+  - public static Collector toMap(Function keyMapper, Function valueMapper)：把元素收集到Map集合中
+
+## 二十一、 反射
+
+### 1. 类加载器
+
+#### 1.1 类加载
+
+当程序要使用某个类时，如果该类还未被加载到内存中，则系统会通过类的加载、连接、初始化这三个步骤来对类进行初始化。如果不出现意外情况，JVM将会连续完成这三个步骤，所以有时也把这三个步骤统称为类加载或者类初始化
+
+- 类的加载
+  - 就是指将class文件读入内存，并为之创建一个java.lang.Class对象
+  - 任何类被使用时，系统都会为之建立一个java.lang.Class对象
+- 类的连接
+  - 验证阶段：用于检验被加载的类是否有正确的内部结构，并和其他类协调一致
+  - 准备阶段：负责为类的类变量分配内存，并设置默认初始化值
+  - 解析阶段：将类的二进制数据中的符号引用替换为直接引用
+- 类的初始化
+  - 该阶段，主要是对类变量进行初始化
+
+类的初始化步骤：
+
+- 假如类还未被加载和连接，则程序先加载并连接该类
+- 假如该类的直接父类还未被初始化，则先初始化其直接父类
+- 假如类中有初始化语句，则系统依次执行这些初始化语句
+
+类的初始化时机：
+
+- 创建类的实例
+- 调用类的类方法
+- 访问类或者接口的类变量，或者为该类变量赋值
+- 使用反射方式来强制创建某个类或者接口对应的java.lang.Class对象
+- 初始化某个类的子类
+- 直接使用java.exe命令来运行某个主类
+
+#### 1.2 类加载器
+
+类加载器的作用
+
+- 负责将.class文件加载到内存中，并为之生成对应的java.lang.Class对象
+
+JVM的类加载机制：
+
+- 全盘负责：就是当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显示使用另外一个类加载器来载入
+- 父类委托：就是当一个类加载器负责加载某个Class时，先让父类加载器试图加载该Class，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类
+- 缓存机制：保证所有加载过的Class都会被缓存，当程序需要使用某个Class对象时，类加载器先从缓存区中搜索该Class，只有当缓存区中不存在该Class对象时，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存储到缓存区
+
+ClassLoader是负责加载类的对象，Java运行时具有以下内置类加载器：
+
+- Bootstrap class loader（null）：它是虚拟机的内置类加载器，通常表示为null，并且没有父null
+
+- Platform class loader（PlatformClassLoader）：平台类加载器可以看到所有平台类，平台类包括由平台类加载器或其祖先定义的Java SE平台API的实现类和JDK特定的运行时类
+
+- System class loader（AppClassLoader）：它也被称为应用程序类加载器，与平台类加载器不同，系统类加载器通常用于定义应用程序类路径，模块路径和JDK特定工具上的类
+
+  | 方法名                                    | 说明                       |
+  | ----------------------------------------- | -------------------------- |
+  | static ClassLoader getSystemClassLoader() | 返回用于委派的系统类加载器 |
+  | ClassLoader getParent()                   | 返回父类加载器进行委派     |
+
+### 2. 反射
+
+![image-20210829161346282](img/image-20210829161346282.png)
+
+#### 2.1 概述
+
+Java反射机制：是指在运行时去获取一个类的变量和方法信息。然后通过获取到的信息来创建对象，调用方法的一种机制。由于这种动态性可以极大的增强程序的灵活性，程序不用再编译期就完成确定，在运行期仍然可以扩展。
+
+#### 2.2 获取Class类的对象
+
+要想通过反射去使用一个类，首先要获取到该类的字节码文件对象，也就是类型为Class类型的对象
+
+三种方式获取Class类型的对象：
+
+- 使用类的class属性来获取该类的Class对象，如Student.class将会返回Student类对应的Class对象
+
+- 调用对象的getClass()方法，返回该对象所属类对应的Class对象，该方法是Object类中的方法，所有Java对象都可以调用该方法
+
+- 使用Class类中的静态方法forName(String className)，该方法需要传入字符串参数，该字符串参数的值是某个类的全路径，也就是完整包的路径
+
+  ```java
+  // 全部相等，即各种方法获取的同一个类的Class对象为同一个
+  // 使用类的class属性获取该类对应的Class对象
+  Class<Student> c1 = Student.class;
+  System.out.println(c1);
+  
+  Class<Student> c2 = Student.class;
+  System.out.println(c1 == c2);
+  System.out.println("--------------");
+  
+  // 使用getClass方法获取class对象
+  Student student = new Student();
+  Class<? extends Student> c3 = student.getClass();
+  System.out.println(c1 == c3);
+  System.out.println("-----------");
+  
+  // 使用静态方法forName获取
+  Class<?> c4 = Class.forName("org.lql.test.Student");
+  System.out.println(c1 == c4);
+  ```
+
+#### 2.3 反射获取构造方法并使用
+
+| 方法名                                                       | 说明                             |
+| ------------------------------------------------------------ | -------------------------------- |
+| Constructor<?>[] getConstructors()                           | 返回所有公共构造函数对象数组     |
+| Constructor<?>[] getDeclaredConstructors()                   | 返回类声明的所有构造函数对象数组 |
+| Constructor<T> getConstructor(Class<?>... parameterTypes)    | 返回一个公共构造函数对象         |
+| Constructor<T> getDeclaredConstructor(Class<?>... parameterTypes) | 返回一个构造函数对象             |
+
+```java
+// 获取class对象
+Class<Student> c = Student.class;
+
+// 获取构造方法
+// 此方法获取到所有公有构造方法
+// Constructor<?>[] cs = c.getConstructors();
+
+// 此方法获取所有构造方法
+Constructor<?>[] cs = c.getDeclaredConstructors();
+for (Constructor<?> con : cs) {
+System.out.println(con);
+}
+
+System.out.println("----------------");
+// 获取指定构造方法
+// 获取指定的公共构造方法，参数是要获取的构造方法的参数的个数和数据类型对应的字节码文件对象
+Constructor<Student> con = c.getConstructor();
+// 根据构造方法来创建对象，参数为构造函数对应的参数
+Student student = con.newInstance();
+System.out.println(student);
+
+System.out.println("----------------");
+
+// 通过setAccessible(boolean flag)：设置值为true时，方法取消访问检查
+con1.setAccessible(true);
+//返回任意的构造方法，包括私有和默认
+Constructor<Student> con1 = c.getDeclaredConstructor(String.class, int.class);
+// 创建对象
+Student curry = con1.newInstance("curry", 18);
+System.out.println(curry);
+```
+
+#### 2.4 反射获取成员变量和使用
+
+| 方法名                              | 说明                                                         |
+| ----------------------------------- | ------------------------------------------------------------ |
+| Field[] getFields()                 | 返回所有可访问公共字段对象数组                               |
+| Field[] getDeclaredFields()         | 返回所有字段对象数组                                         |
+| Field getField(String name)         | 返回指定公共成员字段对象， `name`参数是`String`指定所需字段的简单名称 |
+| Field getDeclaredField(String name) | 返回指定成员字段对象                                         |
+
+```java
+ // 获取class对象
+ Class<Student> c = Student.class;
+
+// 获取所有公共成员变量
+Field[] fields = c.getFields();
+System.out.println(Arrays.toString(fields));
+System.out.println("---------------");
+
+// 获取所有成员变量
+Field[] fields1 = c.getDeclaredFields();
+System.out.println(Arrays.toString(fields1));
+System.out.println("---------------");
+
+// 根据名称获取所有成员变量
+// c.getDeclaredField("name")
+
+// 根据名称获取获取单个公共成员变量
+Field address = c.getField("address");
+// 通过反射使用成员变量
+Constructor<Student> constructor = c.getConstructor();
+Student student = constructor.newInstance();
+
+// 给address成员变量赋值
+address.set(student, "西安");
+```
+
+#### 2.5 反射获取成员方法并使用
+
+| 方法名                                                       | 说明                                         |
+| ------------------------------------------------------------ | -------------------------------------------- |
+| Field[] getMethods()                                         | 获取所有公共成员方法对象数组，包含继承的方法 |
+| Field[] getDeclaredMethods()                                 | 获取所有成员方法对象数组，只有本类的方法     |
+| Field getMethod(String name, Class<?>… parameterTypes)       | 返回指定公共成员方法对象                     |
+| Field getDeclaredMethod(String name, Class<?>… parameterTypes) | 返回指定成员方法对象                         |
+
+```java
+// 获取class对象
+Class<Student> c = Student.class;
+
+// 获取所有公共成员方法，包含继承的方法
+Method[] methods = c.getMethods();
+System.out.println(Arrays.toString(methods));
+System.out.println("---------------");
+
+// 获取所有成员方法，只有本类的方法
+Method[] methods1 = c.getDeclaredMethods();
+System.out.println(Arrays.toString(methods1));
+System.out.println("---------------");
+
+// 根据名称获取所有成员方法
+// c.getDeclaredMethod("name", .....)
+
+// 根据名称及参数类型列表获取单个公共成员方法
+Method method2 = c.getMethod("method2", String.class);
+// 通过反射使用成员变量
+Constructor<Student> constructor = c.getConstructor();
+Student student = constructor.newInstance();
+
+// 调用方法
+method2.invoke(student, "西安");
+```
+
+
+
