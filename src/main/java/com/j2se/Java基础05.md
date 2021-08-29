@@ -963,5 +963,126 @@ Student student = constructor.newInstance();
 method2.invoke(student, "西安");
 ```
 
+## 二十二、 注解
 
+### 1. 概述
 
+- 注解：说明程序的。给计算机看的
+- 注释：用文字描述程序的。给程序员看的
+- 注解（Annotation），也叫元数据。一种代码级别的说明。它是JDK1.5及以后版本引入的一个特性，与类、接口、枚举是在同一个层次。它可以声明在包、类、字段、方法、局部变量、方法参数等的前面，用来对这些元素进行说明，注释。
+  - JDK1.5之后的新特性
+  * 说明程序的
+  - 使用注解：@注解名称
+
+### 2.  作用分类
+
+- 编写文档：通过代码里标识的注解生成文档【生成文档doc文档】
+- 代码分析：通过代码里标识的注解对代码进行分析【使用反射】
+- 编译检查：通过代码里标识的注解让编译器能够实现基本的编译检查【Override】
+
+### 3. JDK中预定义的一些注解
+
+* @Override	：检测被该注解标注的方法是否是继承自父类(接口)的
+* @Deprecated：该注解标注的内容，表示已过时
+* @SuppressWarnings：压制警告
+  * 一般传递参数all  @SuppressWarnings("all")
+
+### 4. 自定义注解
+
+注解本质上就是一个接口，该接口默认继承Annotation接口
+
+- 元注解：用于描述注解的注解
+  - @Target：描述注解能够作用的位置
+    - ElementType取值
+      - TYPE：可以作用于类上
+      - METHOD：可以作用于方法上
+      - FIELD：可以作用于成员变量上
+  -  @Retention：描述注解被保留的阶段
+    - @Retention(RetentionPolicy.RUNTIME)：当前被描述的注解，会保留到class字节码文件中，并被JVM读取到
+  - @Documented：描述注解是否被抽取到api文档中
+  - @Inherited：描述注解是否被子类继承
+
+- 属性：接口中的抽象方法
+  - 属性的返回值类型有下列取值
+    - 基本数据类型
+       - String
+      - 枚举
+     - 注解
+    * 以上类型的数组
+  - 定义了属性，在使用时需要给属性赋值
+    * 如果定义属性时，使用default关键字给属性默认初始化值，则使用注解时，可以不进行属性的赋值
+    * 如果只有一个属性需要赋值，并且属性的名称是value，则value可以省略，直接定义值即可
+    * 数组赋值时，值使用{}包裹。如果数组中只有一个值，则{}可以省略
+
+```java
+元注解
+public @interface 注解名称{
+    属性列表;
+}
+
+// 注解本质上就是一个接口，该接口默认继承Annotation接口
+public interface MyAnno extends java.lang.annotation.Annotation {}
+```
+
+### 5. 注解使用
+
+- 获取注解定义的位置的对象  （Class，Method,Field）
+
+- 获取指定的注解：getAnnotation(Class)
+
+  - 其实就是在内存中生成了一个该注解接口的子类实现对象
+
+    ```java
+    public class ProImpl implements Pro{
+        public String className(){
+            return "cn.itcast.annotation.Demo1";
+        }
+        public String methodName(){
+            return "show";
+        }
+    }
+    ```
+
+- 调用注解中的抽象方法获取配置的属性值
+
+  ```java
+  //定义注解
+  // 元注解
+  // 使用在类上
+  @Target(ElementType.TYPE)
+  // 注解保留到运行时
+  @Retention(RetentionPolicy.RUNTIME)
+  // 抽取到api文档
+  @Documented
+  // 该注解可以被继承
+  @Inherited
+  public @interface MyAnnotation {
+  
+      // 属性其实就是借口的抽象方法，可以定义默认值
+      int value() default 0;
+  
+      String show() default "";
+  }
+  
+  // 使用该注解，只写一个value参数时可以省略value直接写值，如果有多个参数必须以key=value的形式写
+  @MyAnnotation(value = 20, show = "hahah")
+  public class AnnotationObject {
+  }
+  
+  // 解析注解
+  // 获取要解析的使用了注解类的class对象
+  Class<AnnotationObject> aClass = AnnotationObject.class;
+  // 获取class对象中类上的注解对象
+  // 其实就是在内存中生成了一个该注解接口的子类实现对象，我们获取值时使用接口的抽象方法即可
+  MyAnnotation annotation = aClass.getAnnotation(MyAnnotation.class);
+  // 调用注解对象中定义的抽象方法，获取返回值
+  int value = annotation.value();
+  String show = annotation.show();
+  
+  // 20
+  System.out.println(value);
+  // haha
+  System.out.println(show);
+  ```
+
+  
