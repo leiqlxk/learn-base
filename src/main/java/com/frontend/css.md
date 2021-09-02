@@ -297,7 +297,7 @@
    * 圆角属性：border- * - * -radius、border-radius,值可以为px，也可以为百分比其参考的是当前元素的border+padding+width
    * top、bottom对行内非替换元素有效但是其不占据空间，即会延伸到别的元素内部
 6. 外边距（margin）：
-   * 四个方向：margin-top、padding-right、margin-bottom、padding-left
+   * 四个方向：margin-top、padding-right、margin-bottom、margin-left
    * 简写：margin，规律和内边距相同
    * 值为百分比时是相对于父元素的宽高
    * 上下margin折叠（合并）：块级元素margin的上下会合并两个元素设置的值，即如果上行的元素设置了bottom并且下行设置了top则实际的空间只有一个，但是左右不会产生合联

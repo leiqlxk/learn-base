@@ -45,8 +45,6 @@ public class InterfaceDemo implements Interface {}
 public interface Interface1 extends Interface{}
 ```
 
-
-
 ### 2. 接口的特点
 
 - 成员变量只能是常量，默认修饰符：**public static final**可以省略不写
@@ -69,7 +67,7 @@ public interface Interface1 extends Interface{}
 
 ### 5. 形参与返回值问题
 
-- 形参和返回值是类时，需要的都是该类的对象
+- 形参和返回值是类时，需要的都是该类及其子类的对象
 - 形参和返回值是抽象类时，需要的是抽象类的子类对象
 - 形参和返回值是接口时，需要的是该接口的实现类对象
 
@@ -90,7 +88,7 @@ public class 类名{
 内部类的访问特点：
 
 - 内部类可以直接访问外部类的成员，包括私有
-- 外部类要访问内部类的成员，必须创建内部类的对象
+- 外部类要访问非静态内部类的成员，必须创建内部类的对象
 - 外部类的加载及实例化并不会加载内部类，只有在第一次使用时才会加载和初始化，本质上JVM并不关心什么是内部类，Java语言编译器（例如javac、ECJ）在将Java源码编译到Class文件的过程中，将内部类做了“解糖”，给其添加一些必要的转换之后将其提升为跟顶层类一样的形式，然后后面就不再有内部类与否的区别了。
 
 内部类的分类：
@@ -233,7 +231,7 @@ new Inner() {
 | public String toString()                   | 返回对象的字符串表示形式。                                   |
 | public boolean equals(Object obj)          | 指示某个其他对象是否“等于”此对象，通常需要在重写此方法时覆盖`hashCode`方法 |
 | public int hashCode()                      | 返回对象的哈希码值                                           |
-| public final 类<?> getClass()              | 返回此`Object`的运行时类                                     |
+| public final Class<?> getClass()           | 返回此`Object`的运行时类                                     |
 | protected Object clone()                   | 创建并返回此对象的副本。如果对象的类不支持`Cloneable`接口。  |
 | public final void notify()                 | 唤醒正在此对象监视器上等待的单个线程。                       |
 | public final void notifyAll()              | 唤醒等待此对象监视器的所有线程。                             |
@@ -571,7 +569,7 @@ Calendar提供了一个类方法getInstance用于获取Calendar对象，其日�
 | public abstract void add(int field, int amount)       | 根据日历的规则，将指定的时间量添加或减去给定的日历字段 |
 | public final void set(int year, int mounth, int date) | 设置当前日历的年月日                                   |
 
-## 十一、 异常
+## 十二、 异常
 
 ### 1. 概述
 
@@ -673,7 +671,7 @@ Throws和throw的区别
 | 表示抛出异常，由该方法的调用者来处理         | 表示抛出异常，由方法体内的语句处理 |
 | 表示出现异常的一种可能性，并不一定会发生异常 | 执行throw一定抛出了某种异常        |
 
-## 十二、集合框架
+## 十三、集合框架
 
 ### 1. 概述
 
@@ -845,7 +843,7 @@ for(int i : arr) {
 
 #### 4.6 数据结构
 
-数据结构时计算机存储、组织数据的方式。是指相互之间存在一种或多种特定关系的数据元素的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储效率。
+数据结构是计算机存储、组织数据的方式。是指相互之间存在一种或多种特定关系的数据元素的集合。通常情况下，精心选择的数据结构可以带来更高的运行或者存储效率。
 
 #### 4.7  栈
 
@@ -881,7 +879,7 @@ List集合常用子类：ArrayList、LinkedList
 | public E getFirst()       | 返回此列表中的第一个元素         |
 | public E getLast()        | 返回此列表中的最后一个元素       |
 | public E removeFirst()    | 从此列表中删除并返回第一个元素   |
-| public E removeFirst()    | 从此列表中删除并返回最后一个元素 |
+| public E removeLast()     | 从此列表中删除并返回最后一个元素 |
 
 ### 5. Set
 
@@ -923,7 +921,7 @@ e -->|返回false| g;
 
 #### 5.5 哈希表
 
-- JDK8之前，底层采用**数组+链表**实现，可以说是一个元素为链表的数值
+- JDK8之前，底层采用**数组+链表**实现，可以说是一个元素为链表的数组
 - JDK8以后，在长度比较长的时候，底层使用了红黑树实现了优化
 
 ![image-20210826222831670](img/image-20210826222831670.png)
