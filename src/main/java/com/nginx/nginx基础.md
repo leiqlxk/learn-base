@@ -1,6 +1,13 @@
 ## nginx是什么
     nginx是一个高性能http和反向代理服务器，主要功能代理、负载均衡、动静分离。
+## 应用场景
+
+1. http 服务器。Nginx 是一个 http 服务可以独立提供 http 服务。可以做网页静态服务器
+2. 虚拟主机。可以实现在一台服务器虚拟出多个网站。例如个人网站使用的虚拟主机
+3. 反向代理，负载均衡。当网站的访问量达到一定程度后，单台服务器不能满足用户的请求时，需要用多台服务器集群可以使用 nginx 做反向代理。并且多台服务器可以平均分担负载，不会因为某台服务器负载高宕机而某台服务器闲置的情况
+
 ## 正向代理
+
 ![img_1.png](img_1.png)    
     正向代理是在用户端，比如访问某些国外网站时vpn设置在用户浏览器端，浏览器先访问vpn地址，vpn再转发请求，并最后将请求结果原路返回。
 ## 反向代理
@@ -65,16 +72,16 @@ http {
         
         server {
             #server全局块
-            listen       8000;
-            server_name  localhost;
+            listen       8000;  # 监听的端口
+            server_name  localhost;# 域名或ip
             #location块
-            location / {
-                root   html;
-                index  index.html index.htm;
+            location / {# 访问路径配置
+                root   html;# 根目录
+                index  index.html index.htm;# 默认首页
                 #加入代理
                 proxy_pass http://testUpstream
             }
-            error_page   500 502 503 504  /50x.html;
+            error_page   500 502 503 504  /50x.html;# 错误页面
             location = /50x.html {
                 root   html;
             }

@@ -27,12 +27,46 @@ RPM和DPKG为最常见的两类软件包管理工具：
 ### 发行版
 Linux发行版是Linux内核及各种应用软件的集成版本。           
 ![img.png](img.png)
+
+## Vi和Vim编辑器
+
+### Vim编辑器
+
+在Linux下一般使用vi编辑器来编辑文件
+
 ### VIM三个模式
 ![img_1.png](img_1.png)     
 * 一般指令模式（command mode）：VIM的默认模式，可以用于移动游标查看内容
-* 编辑模式（insert mode）：按下“i”等按键之后进入，可以对文本进行编辑
+  * vim file
+* 编辑模式（insert mode）：按 i 、o、a键之后进入，可以对文本进行编辑
+  * i 在当前位置前插入
+  * I 在当前行首插入
+  * a 在当前位置后插入
+  * A 在当前行尾插入
+  * o 在当前行之后插入一行
+  * O 在当前行之前插入一行
 * 指令列模式（bottom-line mode）：按下“:”按键之后进入，用于保存退出操作          
-![img_2.png](img_2.png)
+  ![img_2.png](img_2.png)
+
+### 快捷键
+
+- dd – 快速删除一行
+- yy - 复制当前行
+- nyy - 从当前行向后复制几行
+- p - 粘贴
+- R – 替换
+
+###  重定向输出>和>>
+
+```
+>  重定向输出，覆盖原有内容；
+>> 重定向输出，有追加功能；示例：
+cat /etc/passwd > a.txt  将输出定向到a.txt中
+cat /etc/passwd >> a.txt  输出并且追加
+
+ifconfig > ifconfig.txt
+```
+
 ## 磁盘
 ### 磁盘文件名
 Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接口类型命名，常见磁盘的文件名如下：     
@@ -59,12 +93,39 @@ Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接
 除此之外还包括：
 * superblock：记录文件系统的整体信息，包括inode和block的总量、使用量、剩余量，以及文件系统的格式与相关信息等
 * block bitmap：记录block是否是被使用的位图
+
+### 目录结构
+
+![img](wpsDDBE.tmp.jpg)
+
 ### 文件读取
 对于Ext2文件系统，当要读取一个文件的内容时，写在inode中查找文件内容所在的block，然后把block的内容读出来。          
 ![img_3.png](img_3.png)         
 而对于FAT文件系统它没有inode，每个blocak中存储着下一个block的编号          
 ![img_4.png](img_4.png)     
+
+## 常用命令
+
+### 切换目录命令 cd
+
+```
+cd app	切换到app目录
+cd ..	切换到上一层目录
+cd /	切换到系统根目录
+cd ~	切换到用户主目录
+cd -	切换到上一个所在目录
+```
+
+### 显示当前所在目录
+
+pwd
+
+### 清屏
+
+clear/ crtl + L
+
 ## 文件
+
 ### 文件属性
 用户分为三种：文件拥有者、群组以及其它人，对不同的用户有不同的文件权限。        
 使用 ls 查看一个文件时，会显示一个文件的信息，例如 drwxr-xr-x 3 root root 17 May 6 00:14 .config，对这个信息的解释如下：       
@@ -89,11 +150,8 @@ Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接
    ## ls [-aAdfFhilnrRSt] file|dir
    -a ：列出全部的文件
    -d ：仅列出目录本身
-   -l ：以长数据串行列出，包含文件的属性与权限等等数据
+   -l ：以长数据串行列出，包含文件的属性与权限等等数据,缩写成ll
    ```
-1. cd    
-   更换当前目录      
-   ```cd [相对路径或绝对路径]```
 1. mkdir    
    创建目录        
    ```
@@ -203,6 +261,7 @@ Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接
 ### 获取文件内容
 1. cat      
    取得文件内容      
+   
    ``` 
    ## cat [-AbEnTv] filename
    -n ：打印出行号，连同空白行也会有行号，-b 不会
@@ -243,6 +302,7 @@ Linux中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接
    ```
 1. find
    文件搜索。可以使用文件的属性和权限进行搜索
+   
    ``` 
    ## find [basedir] [option]
    example: find . -name "shadow*"
@@ -510,6 +570,11 @@ dmtsai   Fri
    
    #查看特定的进程
    ## ps aux | grep threadx
+   
+   ps –ef  查看所有进程
+   ps –ef | grep ssh 查找某一进程
+   kill 2868  杀掉2868编号的进程
+   kill -9 2868  强制杀死进程
    ```
 1. pstree
    查看进程树    
@@ -532,4 +597,75 @@ dmtsai   Fri
 ### 进程状态
 ![img_9.png](img_9.png)    
 ![img_10.png](img_10.png)     
+
+## 网络操作
+
+### 主机名配置
+
+```
+hostname 查看主机名
+
+hostname xxx 修改主机名 重启后无效
+
+如果想要永久生效，可以修改/etc/sysconfig/network文件
+```
+
+##  IP地址配置
+
+```
+ifconfig 查看(修改)ip地址(重启后无效)
+
+ifconfig eth0 192.168.12.22 修改ip地址
+
+如果想要永久生效
+
+修改 /etc/sysconfig/network-scripts/ifcfg-eth0文件
+
+DEVICE=eth0 #网卡名称
+BOOTPROTO=static #获取ip的方式(static/dhcp/bootp/none)
+
+HWADDR=00:0C:29:B5:B2:69 #MAC地址
+IPADDR=12.168.177.129 #IP地址
+NETMASK=255.255.255.0 #子网掩码
+NETWORK=192.168.177.0 #网络地址
+BROADCAST=192.168.0.255 #广播地址
+```
+
+### 域名映射
+
+/etc/hosts文件用于在通过主机名进行访问时做ip地址解析之用,相当于windows系统的C:\Windows\System32\drivers\etc\hosts文件的功能
+
+### 网络服务管理
+
+```
+service network status 查看指定服务的状态
+
+service network stop 停止指定服务
+
+service network start 启动指定服务
+
+service network restart 重启指定服务
+
+ 
+
+service --status–all 查看系统中所有后台服务
+
+netstat –nltp 查看系统中网络进程的端口监听情况
+
+ 
+
+防火墙设置
+
+防火墙根据配置文件/etc/sysconfig/iptables来控制本机的”出”、”入”网络访问行为。
+
+service iptables status 查看防火墙状态
+
+service iptables stop 关闭防火墙
+
+service iptables start 启动防火墙
+
+chkconfig  iptables off 禁止防火墙自启
+```
+
+
 
