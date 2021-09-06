@@ -15,7 +15,7 @@ Maven 是一个项目管理工具，它包含了一个项目对象模 型 (POM�
 1. 官网：http://maven.apache.org/
 2. 安装
    - 依赖Java，需要配置JAVA_HOME
-   - 设置Maven自身的运行环境，配置MAVEN_HOME
+   - 设置Maven自身的运行环境，配置MAVEN_HOME，并将bin路径配置在path中
    - 使用MVN在cmd中测试是否成功
 
 ## 三、Maven基础概念
