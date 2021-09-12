@@ -843,7 +843,7 @@ public void quickMethod16(HttpServletRequest request, HttpServletResponse respon
 
 系统的**Dao**、**Service**、**Controller**出现都通过throws Exception向上抛出，最后由SpringMVC前端控制器交由异常处理器进行异常处理，如下图：
 
-![image-20210907233028509](image-20210907233028509.png)
+![image-20210907233028509](img/image-20210907233028509.png)
 
 ### 2. 异常处理两种方式
 
