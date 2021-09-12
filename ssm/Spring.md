@@ -1360,7 +1360,9 @@ PlatformTransactionManager 接口是 spring 的事务管理器，它里面提供
 
 ![image-20210912211721006](img/image-20210912211721006.png)
 
-​		PlatformTransactionManager 是接口类型，不同的 Dao 层技术则有不同的实现类，例如：Dao 层技术是jdbc  或 mybatis 时：org.springframework.jdbc.datasource.DataSourceTransactionManager  Dao 层技术是hibernate时：org.springframework.orm.hibernate5.HibernateTransactionManager
+​		PlatformTransactionManager 是接口类型，不同的 Dao 层技术则有不同的实现类，例如：Dao 层技术是jdbc  或 mybatis 时：org.springframework.jdbc.datasource.DataSourceTransactionManager  
+
+Dao 层技术是hibernate时：org.springframework.orm.hibernate5.HibernateTransactionManager
 
 #### 1.2 TransactionDefinition
 
