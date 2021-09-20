@@ -162,7 +162,7 @@
    * 目标伪类（target pseudo-classes）：
      * :target可以选中被选中的锚点
    * 语言伪类（language pseudo-classes）：
-     * :lange()
+     * :language()
    * 元素状态伪类（UI element states pseudo-classes）：
      * :enabled
      * :disabled
