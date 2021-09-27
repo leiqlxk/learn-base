@@ -1054,10 +1054,6 @@ public interface UserMapper {
                 many = @Many(select = 
                              "com.itheima.mapper.RoleMapper.findByUid"))
     })
-    List<User> findAllUserAndRole();}
-
-public interface RoleMapper {
-    @Select("select * from role r,user_role ur where r.id=ur.role_id and ur.user_id=#{uid}")
-    List<Role> findByUid(int uid);
+    List<User> findAllUserAndRole();
 }
 ```
