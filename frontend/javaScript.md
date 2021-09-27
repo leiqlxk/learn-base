@@ -459,7 +459,7 @@ js引擎在运行js代码的时候分为两步：
 3. 获取元素，使用console.dir可以打印返回的元素对象，更好的查看里面的属性和方法
    * 根据id获取，返回对象：document.getElementById('id')
    * 根据标签获取，以伪数组的形式返回元素对象的集合：document.getElementByTagName('tagName')，也可以通过父元素来获取：element.getElementByTagName('tagName')
-   * H5新增的方法获取：
+   * Html5新增的方法获取：
      * 通过类名来获取，返回集合：document.getElementByClassName('className')
      * 根据选择器获取，返回的是符合条件的第一个元素对象，ie9及以上：document.querySelector('selector')
      * 根据选中器获取所有元素对象，ie9及以上：document.querySelectorAll('selector')
@@ -490,7 +490,7 @@ js引擎在运行js代码的时候分为两步：
 6. 自定义属性：
    * [element].getAttribute('属性名')也可获取内置属性
    * [element].setAttribute('属性名', '属性值')也可修改内置属性
-   * H5自定义属性使用data-开头作为属性名，并可以使用[element].dataset.[data-后面的名字]或[element].dataset['data-后面的名字']如果data-后有多个-连接的字符，那么采取驼峰命名来获取，ie11才支持
+   * Html5自定义属性使用data-开头作为属性名，并可以使用[element].dataset.[data-后面的名字]或[element].dataset['data-后面的名字']如果data-后有多个-连接的字符，那么采取驼峰命名来获取，ie11才支持
 7. 节点操作
    * 父节点，没有父节点就返回null：[node].parentNode
    * 子节点，会返回所有子节点包含元素节点、文本节点等等：[node].childNodes
@@ -546,7 +546,7 @@ js引擎在运行js代码的时候分为两步：
    * 当前目标阶段
    * 冒泡阶段：事件最开始由最具体的元素接收，然后逐级向上传播到DOM最顶层节点的过程
    ![img_5.png](img_5.png)
-   ``` javascript
+   ``` html
       // 1. js代码中只能执行捕获或者冒泡其中的一个阶段
       // 2. onclick和attachEvent只能得到冒泡阶段
       // 捕获节点会先执行father，后执行son
@@ -616,14 +616,14 @@ js引擎在运行js代码的时候分为两步：
    * 作用：只操作一次DOM，相当于给每个子节点都添加了事件监听，提高了程序的性能
 
    ```  html
-   <ur>
+   <ul>
    	<li>h1</li>
        <li>h1</li>
        <li>h1</li>
        <li>h1</li>
        <li>h1</li>
        <li>h1</li>
-   </url>
+   </ul>
    <script>
    	// 核心：给父节点添加侦听器，利用事件冒泡影响每一个子节点
        var ul = document.querySelector('ul')
@@ -734,7 +734,7 @@ js引擎在运行js代码的时候分为两步：
 1. setTimeout
 
    ``` javascript
-   // window.setTimeout(调用函数, [延时时间-单位未毫秒])
+   // window.setTimeout(调用函数, [延时时间-单位we毫秒])
    // 延迟时间可以省略默认是0
    // 页面中可能有很多的定时器，经常给定时器添加标识符
    // 其中的函数为回调函数（callback），等待时间到了才去调用这个函数
@@ -833,7 +833,7 @@ js引擎在运行js代码的时候分为两步：
 
    ![image-20210818232920991](image-20210818232920991.png)
 
-5. 同步任务都在主线程上执行，形成一个执行栈，JS的异步是通过回调函数实现，放在任务队列中，一般而言，异步任务又以下三种类型：
+5. 同步任务都在主线程上执行，形成一个执行栈，JS的异步是通过回调函数实现，放在任务队列中，一般而言，异步任务有以下三种类型：
 
    - 普通事件，如click、resize等
    - 资源加载，如load、error等
