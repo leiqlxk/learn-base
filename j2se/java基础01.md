@@ -788,7 +788,7 @@ for (int i = 0; i < arr.length; i++) {
 
 #### 6.2 获取最值
 
-```javascript
+```java
 int[] arr = {12, 45, 98, 73, 60};
 int max = arr[0];
 int min = arr[0];
