@@ -1,6 +1,6 @@
 ## 一、概述
 
-Maven 是一个项目管理工具，它包含了一个项目对象模 型 (POM：Project Object Model)，一组标准集合，一个项目生命周期(Project Lifecycle)，一个依赖管 理系统(Dependency Management System)，和用来运行定义在生命周期阶段(phase)中插件(plugin)目标 (goal)的逻辑。
+Maven 是一个项目管理工具，它包含了一个项目对象模 型 (POM：Project Object Model)，一组标准集合，一个项目生命周期(Project Lifecycle)，一个依赖管理系统(Dependency Management System)，和用来运行定义在生命周期阶段(phase)中插件(plugin)目标 (goal)的逻辑。
 
 ![image-20210905192528094](img/image-20210905192528094.png)
 
@@ -421,7 +421,7 @@ Maven构建生命周期描述的是一次构建过程经历了多少个事件
               <artifactId>spring-context</artifactId>
               <version>5.1.9.RELEASE</version>
           </dependency>
-          <dependencies>
+      <dependencies>
   <dependencyManagement>
   ```
 
