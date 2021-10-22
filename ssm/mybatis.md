@@ -114,12 +114,16 @@ MyBatis官网地址：`http://www.mybatis.org/mybatis-3/`
            <environment id="development">
                <transactionManagertype="JDBC"/>
                <dataSource type="POOLED">
-                   <property name="driver" value="com.mysql.jdbc.Driver"/><property name="url" value="jdbc:mysql:///test"/>
-                   <property name="username" value="root"/><property name="password" value="root"/>
+                   <property name="driver" value="com.mysql.jdbc.Driver"/>
+                   <property name="url" value="jdbc:mysql:///test"/>
+                   <property name="username" value="root"/>
+                   <property name="password" value="root"/>
                </dataSource>
            </environment>
        </environments>
-       <mappers> <mapper resource="com/itheima/mapper/UserMapper.xml"/> </mappers>
+       <mappers> 
+           <mapper resource="com/itheima/mapper/UserMapper.xml"/> 
+       </mappers>
    </configuration>
    ```
 
@@ -466,7 +470,7 @@ Sql 中可将重复的 sql 提取出来，使用时用 include 引用即可，�
 
 ```xml
 <!--抽取sql片段简化编写-->
-<sql id="selectUser" select * from User</sql>
+<sql id="selectUser"> select * from User</sql>
 
 <select id="findById" parameterType="int" resultType="user">
     <include refid="selectUser"></include> where id=#{id}
@@ -949,12 +953,11 @@ public class Order {
     private User user;
 }
 
-public class Order {
+public class User {
     private int id;
-    private Date ordertime;
-    private double total;
-    //代表当前订单从属于哪一个客户
-    private User user;
+    private String username;
+    private String password;
+    private Date birthday;
 }
 
 public interface OrderMapper {
@@ -965,8 +968,7 @@ public interface OrderMapper {
         @Result(property = "total",column = "total"),
         @Result(property = "user",column = "uid",
                 javaType = User.class,
-                one = @One(select = 
-                           "com.itheima.mapper.UserMapper.findById"))
+                one = @One(select = "com.itheima.mapper.UserMapper.findById"))
     })
     List<Order> findAll();
 }
@@ -984,16 +986,15 @@ public class Order {
     private int id;
     private Date ordertime;
     private double total;
-    //代表当前订单从属于哪一个客户
-    private User user;
 }
 
-public class Order {
+public class User {
     private int id;
-    private Date ordertime;
-    private double total;
-    //代表当前订单从属于哪一个客户
-    private User user;
+    private String username;
+    private String password;
+    private Date birthday;
+    
+    private List<Order> orderList;
 }
 
 public interface UserMapper {
@@ -1005,8 +1006,7 @@ public interface UserMapper {
         @Result(property = "birthday",column = "birthday"),
         @Result(property = "orderList",column = "id",
                 javaType = List.class,
-                many = @Many(select = 
-                             "com.itheima.mapper.OrderMapper.findByUid"))
+                many = @Many(select = "com.itheima.mapper.OrderMapper.findByUid"))
     })
     List<User> findAllUserAndOrder();
 }

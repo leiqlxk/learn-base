@@ -269,8 +269,9 @@ suffix = ""; --视图名称后缀
 
 ```xml
 <!--配置内部资源视图解析器--> 
-<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 		<property name="prefix" value="/WEB-INF/views/">
-    </property> <property name="suffix" value=".jsp"></property>
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 		
+    <property name="prefix" value="/WEB-INF/views/"></property> 
+    <property name="suffix" value=".jsp"></property>
 </bean>
 ```
 
@@ -333,8 +334,7 @@ suffix = ""; --视图名称后缀
   ```java
   // 通过SpringMVC框架注入的response对象，使用response.getWriter().print(“hello world”) 回写数据，此时不需要视图跳转，业务方法返回值为void
   @RequestMapping("/quick4")
-  public void quickMethod4(HttpServletResponse response) throws 
-      IOException {
+  public void quickMethod4(HttpServletResponse response) throws IOException {
       response.getWriter().print("hello world");
   }
   
@@ -352,7 +352,7 @@ suffix = ""; --视图名称后缀
       return "{\"name\":\"zhangsan\",\"age\":18}"; 
   }
   ```
-
+  
 - 返回对象或集合
 
   ​		通过SpringMVC帮助我们对对象或集合进行json字符串的转换并回写，为处理器适配器配置消息转换参数，指定使用jackson进行对象或集合的转换，因此需要在spring-mvc.xml中进行如下配置：
@@ -371,21 +371,20 @@ suffix = ""; --视图名称后缀
   </dependency> 
   <dependency> 
       <groupId>com.fasterxml.jackson.core</groupId> 
-      <artifactId>jackson-annotations</artifactId>				    	<version>2.9.0</version>
+      <artifactId>jackson-annotations</artifactId>				    	
+      <version>2.9.0</version>
   </dependency>
   
-  <bean class="org.springframework.web.servlet.mvc.method.annotation
-  .RequestMappingHandlerAdapter"> 
+  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"> 
       <property name="messageConverters"> 
           <list>
-              <bean class="org.springframework.http.converter.json
-  .MappingJackson2HttpMessageConverter"></bean>
+              <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
           </list>
   	</property>
   </bean>
   ```
-
-  ```java
+  
+```java
   @RequestMapping("/quick8")
   @ResponseBody
   public User quickMethod8() throws IOException {
@@ -395,17 +394,17 @@ suffix = ""; --视图名称后缀
       return user;
   }
   ```
-
-  ​		在方法上添加**@ResponseBody**就可以返回json格式的字符串，但是这样配置比较麻烦，配置的代码比较多，因此，我们可以使用mvc的注解驱动代替上述配置。
-
-  ```xml
+  
+​		在方法上添加**@ResponseBody**就可以返回json格式的字符串，但是这样配置比较麻烦，配置的代码比较多，因此，我们可以使用mvc的注解驱动代替上述配置。
+  
+```xml
   <!--mvc的注解驱动--> 
   <mvc:annotation-driven/>
   ```
-
-  ​		在 SpringMVC 的各个组件中，**处理器映射器**、**处理器适配器**、**视图解析器**称为 SpringMVC 的三大组件。使用`<mvc:annotation-driven>`自动加载 RequestMappingHandlerMapping（处理映射器）和RequestMappingHandlerAdapter（ 处 理 适 配 器 ），可用在Spring-xml.xml配置文件中使用`<mvc:annotation-driven>`替代注解处理器和适配器的配置。
-
-  ​		同时使用`<mvc:annotation-driven>`默认底层就会集成jackson进行对象或集合的json格式字符串的转换
+  
+​		在 SpringMVC 的各个组件中，**处理器映射器**、**处理器适配器**、**视图解析器**称为 SpringMVC 的三大组件。使用`<mvc:annotation-driven>`自动加载 RequestMappingHandlerMapping（处理映射器）和RequestMappingHandlerAdapter（ 处 理 适 配 器 ），可用在Spring-xml.xml配置文件中使用`<mvc:annotation-driven>`替代注解处理器和适配器的配置。
+  
+​		同时使用`<mvc:annotation-driven>`默认底层就会集成jackson进行对象或集合的json格式字符串的转换
 
 ## 五、SpringMVC 获得请求数据
 
@@ -474,7 +473,8 @@ public void quickMethod11(String[] strs) throws IOException {
 获得集合参数时，要将集合参数包装到一个POJO中才可以。
 
 ```html
-<form action="${pageContext.request.contextPath}/quick12" method="post"> 		<input type="text" name="userList[0].username"><br> 
+<form action="${pageContext.request.contextPath}/quick12" method="post"> 		
+    <input type="text" name="userList[0].username"><br> 
     <input type="text" name="userList[0].age"><br> 
     <input type="text" name="userList[1].username"><br> 
     <input type="text" name="userList[1].age"><br> 
@@ -565,7 +565,7 @@ public void quickMethod14(@RequestParam(value="name", required = false, defaultV
 
 ​		**Restful**是一种软件**架构风格**、**设计风格**，而不是标准，只是提供了一组设计原则和约束条件。主要用于客户端和服务器交互类的软件，基于这个风格设计的软件可以更简洁，更有层次，更易于实现缓存机制等。
 
-​		**Restful**风格的请求是使用**“url+请求方式”**表示一次请求目的的，HTTP 协议里面四个表示操作方式的动词如下：
+​		**Restful**风格的请求是使用**“url+请求方式”**表示一次请求目的，HTTP 协议里面四个表示操作方式的动词如下：
 
 - GET：用于获取资源
 - POST：用于新建资源
@@ -619,10 +619,11 @@ public void quickMethod19(@PathVariable(value = "name",required = true) String n
 2. 在配置文件中声明转换器
 
    ```xml
-   <bean id="converterService" class="org.springframework.context.support.ConversionServiceFactoryBean"> <property name="converters"> 
-       <list>
-           <bean class="com.itheima.converter.DateConverter"/>
-       </list>
+   <bean id="converterService" class="org.springframework.context.support.ConversionServiceFactoryBean"> 
+       <property name="converters"> 
+           <list>
+               <bean class="com.itheima.converter.DateConverter"/>
+           </list>
        </property>
    </bean>
    ```
@@ -664,13 +665,11 @@ public void quickMethod16(HttpServletRequest request, HttpServletResponse respon
      ```java
      @RequestMapping("/quick17")
      @ResponseBody
-     public void quickMethod17(
-     @RequestHeader(value = "User-Agent",required = false) String 
-     headerValue){
+     public void quickMethod17(@RequestHeader(value = "User-Agent",required = false) String headerValue){
      System.out.println(headerValue);
      }
      ```
-
+   
 2. @CookieValue
 
    使用@CookieValue可以获得指定Cookie的值
@@ -731,9 +730,12 @@ public void quickMethod16(HttpServletRequest request, HttpServletResponse respon
 
      ```xml
      <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-         <!--上传文件总大小--> <property name="maxUploadSize" value="5242800"/>
-         <!--上传单个文件的大小--> <property name="maxUploadSizePerFile" value="5242800"/>
-         <!--上传文件的编码类型--> <property name="defaultEncoding" value="UTF-8"/>
+         <!--上传文件总大小--> 
+         <property name="maxUploadSize" value="5242800"/>
+         <!--上传单个文件的大小--> 
+         <property name="maxUploadSizePerFile" value="5242800"/>
+         <!--上传文件的编码类型--> 
+         <property name="defaultEncoding" value="UTF-8"/>
      </bean>
      ```
 
@@ -742,8 +744,7 @@ public void quickMethod16(HttpServletRequest request, HttpServletResponse respon
      ```java
      @RequestMapping("/quick20")
      @ResponseBody
-     public void quickMethod20(String name,MultipartFile uploadFile) throws 
-         IOException {
+     public void quickMethod20(String name,MultipartFile uploadFile) throws IOException {
          //获得文件名称
          String originalFilename = uploadFile.getOriginalFilename();
          //保存文件
@@ -796,10 +797,13 @@ public void quickMethod16(HttpServletRequest request, HttpServletResponse respon
    public class MyHandlerInterceptor1 implements HandlerInterceptor {
        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
            System.out.println("preHandle running...");
-           return true; }
+           return true; 
+       }
+       
        public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
            System.out.println("postHandle running...");
        }
+       
        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
            System.out.println("afterCompletion running...");
        } 

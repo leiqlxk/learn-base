@@ -509,7 +509,7 @@ UserService userService2 = applicationContext.getBean(UserService.class);
 
 ### 1. 数据源（连接池）的作用
 
-- 数据源(连接池)是提高程序性能如出现的
+- 数据源(连接池)是提高程序性能
 - 事先实例化数据源，初始化部分连接资源
 - 使用连接资源时从数据源中获取
 - 使用完毕后将连接资源归还给数据源
@@ -620,7 +620,8 @@ UserService userService2 = applicationContext.getBean(UserService.class);
 - DataSource要想使用需要通过set方法设置数据库连接信息，而Spring可以通过set方法进行字符串注入
 
 ```xml
-<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 		
+    <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test"/>
     <property name="user" value="root"/>
     <property name="password" value="root"/>
@@ -649,7 +650,8 @@ applicationContext.xml加载jdbc.properties配置文件获得连接信息。
 
 ```xml
 <context:property-placeholder location="classpath:jdbc.properties"/>
-<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> <property name="driverClass" value="${jdbc.driver}"/>
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 
+    <property name="driverClass" value="${jdbc.driver}"/>
     <property name="jdbcUrl" value="${jdbc.url}"/>
     <property name="user" value="${jdbc.username}"/>
     <property name="password" value="${jdbc.password}"/>
@@ -829,7 +831,8 @@ IAccountService as = ac.getBean("accountService",IAccountService.class);
 1. 导入spring集成Junit的坐标
 
    ```xml
-   <!--此处需要注意的是，spring5 及以上版本要求 junit 的版本必须是 4.12 及以上--> <dependency> 
+   <!--此处需要注意的是，spring5 及以上版本要求 junit 的版本必须是 4.12 及以上--> 
+   <dependency> 
        <groupId>org.springframework</groupId> 
        <artifactId>spring-test</artifactId> 
        <version>5.0.2.RELEASE</version>
@@ -948,8 +951,8 @@ IAccountService as = ac.getBean("accountService",IAccountService.class);
 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"> 
     <property name="driverClass" value="com.mysql.jdbc.Driver"></property> 
     <property name="jdbcUrl" value="jdbc:mysql:///test"></property> 
-    <property name="user" value="root">
-    </property> <property name="password" value="root"></property>
+    <property name="user" value="root"></property> 
+    <property name="password" value="root"></property>
 </bean>
 <!--JdbcTemplate--> 
 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
@@ -1180,9 +1183,10 @@ AOP 常用的术语如下：
        
        <!-- 配置切点表达式和前置增强的织入关系 -->
        <aop:config>
-           <!--引用myAspect的Bean为切面对象--> <aop:aspect ref="myAspect">
-           <!--配置Target的method方法执行时要进行myAspect的before方法前置增强--> 
-           <aop:before method="before" pointcut="execution(public void com.itheima.aop.Target.method())"></aop:before>
+           <!--引用myAspect的Bean为切面对象--> 
+           <aop:aspect ref="myAspect">
+               <!--配置Target的method方法执行时要进行myAspect的before方法前置增强--> 
+               <aop:before method="before" pointcut="execution(public void com.itheima.aop.Target.method())"></aop:before>
            </aop:aspect>
        </aop:config>
    ```
@@ -1190,8 +1194,10 @@ AOP 常用的术语如下：
 6. 测试代码
 
    ```java
-   @RunWith(SpringJUnit4ClassRunner.class) @ContextConfiguration("classpath:applicationContext.xml")
-   public class AopTest { @Autowired
+   @RunWith(SpringJUnit4ClassRunner.class) 
+   @ContextConfiguration("classpath:applicationContext.xml")
+   public class AopTest { 
+       @Autowired
        private TargetInterface target;
        @Test
        public void test1(){
@@ -1337,7 +1343,7 @@ AOP 常用的术语如下：
    同 xml 配置 aop 一样，我们可以将切点表达式抽取。抽取方式是在切面内定义方法，在该方法上使用@Pointcut注解定义切点表达式，然后在在增强注解中进行引用。具体如下：
 
    ```java
-   @@Component("myAspect")
+   @Component("myAspect")
    @Aspect
    public class MyAspect {
        @Before("MyAspect.myPoint()")
@@ -1401,7 +1407,6 @@ Spring 的声明式事务顾名思义就是采用声明的方式来处理事务�
 
 声明式事务处理的作用：
 
-- 事务管理不侵入开发的组件。具体来说，业务逻辑对象就不会意识到正在事务管理之中，事实上也应该如 此，因为事务管理是属于系统层面的服务，而不是业务逻辑的一部分，如果想要改变事务管理策划的话， 也只需要在定义文件中重新配置即可
 - 事务管理不侵入开发的组件。具体来说，业务逻辑对象就不会意识到正在事务管理之中，事实上也应该如 此，因为事务管理是属于系统层面的服务，而不是业务逻辑的一部分，如果想要改变事务管理策划的话， 也只需要在定义文件中重新配置即可
 
 #### 2.2 声明式事务控制的实现
