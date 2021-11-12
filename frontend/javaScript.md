@@ -734,7 +734,7 @@ js引擎在运行js代码的时候分为两步：
 1. setTimeout
 
    ``` javascript
-   // window.setTimeout(调用函数, [延时时间-单位we毫秒])
+   // window.setTimeout(调用函数, [延时时间-单位w毫秒])
    // 延迟时间可以省略默认是0
    // 页面中可能有很多的定时器，经常给定时器添加标识符
    // 其中的函数为回调函数（callback），等待时间到了才去调用这个函数
