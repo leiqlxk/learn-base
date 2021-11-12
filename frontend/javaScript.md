@@ -462,7 +462,7 @@ js引擎在运行js代码的时候分为两步：
    * Html5新增的方法获取：
      * 通过类名来获取，返回集合：document.getElementByClassName('className')
      * 根据选择器获取，返回的是符合条件的第一个元素对象，ie9及以上：document.querySelector('selector')
-     * 根据选中器获取所有元素对象，ie9及以上：document.querySelectorAll('selector')
+     * 根据选择器获取所有元素对象，ie9及以上：document.querySelectorAll('selector')
    * 快速获取body元素：document.body
    * 获取html元素：document.documentElement
 4. 事件基础：事件是可以被js侦测到的行为，触发--响应机制

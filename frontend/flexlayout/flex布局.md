@@ -2,6 +2,7 @@
 布局的传统解决方案基于[盒状模型](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Introduction_to_the_CSS_box_model),
 依赖[display](https://developer.mozilla.org/en-US/docs/Web/CSS/display)属性、[position](https://developer.mozilla.org/en-US/docs/Web/CSS/position)属性、
 [float](https://developer.mozilla.org/en-US/docs/Web/CSS/float)属性。其对于特殊的布局非常不方便，如垂直居中等。
+
 ## flex布局（弹性布局）
 flex布局可以简便、完整、响应式地实现各种页面布局，并得到了所有浏览器的支持。
 ### flex使用
@@ -47,13 +48,13 @@ Webkit内核的浏览器，必须加上-webkit前缀
 .box {
   flex-direction: row | row-reverse | column | column-reverse;
 }
-``` 
+```
 ![flex-direction](./flex-direction.jpg)     
 #### flex-wrap属性
 默认情况下项目都排在轴线上，flex-wrap属性定义如果一条轴线排不下，如何换行
 * nowrap（默认）:不换行
 * wrap:换行,第一行在上方
-* wrap-reverse:换行第一行在下方        
+* wrap-reverse:换行，第一行在下方        
 ![flex-wrap](./flex-wrap.jpg)      
 ```css
 .box {
@@ -125,6 +126,7 @@ Webkit内核的浏览器，必须加上-webkit前缀
 ```
 ![flex-grow](./flex-grow.jpg)     
 如果所有项目的flex-grow属性都为1，则它们将等分剩余空间。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍        
+
 #### flex-shrink属性
 该属性定义了项目缩小比例，默认为1，即如果空间不足，该项目将缩小        
 ```css
@@ -134,8 +136,9 @@ Webkit内核的浏览器，必须加上-webkit前缀
 ```
 ![flex-shrink](./flex-shrink.jpg)       
 如果所有项目的flex-shrink属性都为1，当空间不足时都将等比缩小。如果一个项目的flex-shrink为0，其余项目为1，则空间不足，前者不缩小。负值对该属性无效
+
 #### flex-basis属性
-该属性定义了再分配多余空间之前，项目占据的主轴空间，浏览器根据这个属性计算主轴是否有多余空间，默认值为auto
+该属性定义了在分配多余空间之前，项目占据的主轴空间，浏览器根据这个属性计算主轴是否有多余空间，默认值为auto
 ```css
 .item {
   flex-basis: <lenth> | auto;
