@@ -62,12 +62,6 @@ Object obj = applicationContext.getBean("id");
 1. 导入SpringMVC相关坐标
 
    ```xml
-   <!--Spring坐标--> 
-   <dependency> 
-       <groupId>org.springframework</groupId> 
-       <artifactId>spring-context</artifactId>
-       <version>5.0.5.RELEASE</version>
-   </dependency>
    <!--SpringMVC坐标--> 
    <dependency> 
        <groupId>org.springframework</groupId> 
@@ -88,7 +82,7 @@ Object obj = applicationContext.getBean("id");
        <version>2.0</version>
    </dependency>
    ```
-
+   
 2. 在web.xml配置SpringMVC核心控制器DispathcerServlet
 
    ```xml
@@ -393,17 +387,17 @@ suffix = ""; --视图名称后缀
       user.setAge(18);
       return user;
   }
-  ```
-  
+```
+
 ​		在方法上添加**@ResponseBody**就可以返回json格式的字符串，但是这样配置比较麻烦，配置的代码比较多，因此，我们可以使用mvc的注解驱动代替上述配置。
-  
+
 ```xml
   <!--mvc的注解驱动--> 
   <mvc:annotation-driven/>
-  ```
-  
+```
+
 ​		在 SpringMVC 的各个组件中，**处理器映射器**、**处理器适配器**、**视图解析器**称为 SpringMVC 的三大组件。使用`<mvc:annotation-driven>`自动加载 RequestMappingHandlerMapping（处理映射器）和RequestMappingHandlerAdapter（ 处 理 适 配 器 ），可用在Spring-xml.xml配置文件中使用`<mvc:annotation-driven>`替代注解处理器和适配器的配置。
-  
+
 ​		同时使用`<mvc:annotation-driven>`默认底层就会集成jackson进行对象或集合的json格式字符串的转换
 
 ## 五、SpringMVC 获得请求数据
