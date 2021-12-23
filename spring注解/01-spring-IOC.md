@@ -2,11 +2,11 @@
 
 ```tex
     工厂模式是我们最常用的实例化对象模式了，它是用工厂中的方法代替new创建对象的一种设计模式。
-    我们以Mybatis的SqlSession接口为例，它有一个实现类DefaultSqlSession，如果我们要创建该接口的实例对象:SqlSession sqlSession=new DefaultSqlSession();
-    可是，实际情况是，通常我们都要在创建SqlSession实例时做点初始化的工作,比如解析XML,封装连接数据库的信息等等。
+    以Mybatis的SqlSession接口为例，它有一个实现类DefaultSqlSession，如果要创建该接口的实例对象:SqlSession sqlSession=new DefaultSqlSession();
+    可是，实际情况是，通常都要在创建SqlSession实例时做点初始化的工作,比如解析XML,封装连接数据库的信息等等。
      在创建对象时，如果有一些不得不做的初始化操作时，我们首先到的是，可以使用构造函数，这样生成实例就写成:SqlSession sqlSession=new DefaultSqlSession(传入配置文件的路径);
-     但是，如果创建sqlSession实例时所做的初始化工作不是像赋值这样简单的事，可能是很长一段代码，如果也写入构造函数中，那你的代码很难看了（就需要Refactor重构）。
-     为什么说代码很难看，初学者可能没有这种感觉，我们分析如下，初始化工作如果是很长一段代码，说明要做的工作很多，将很多工作装入一个方法中，相当于将很多鸡蛋放在一个篮子里，是很危险的，这也是有悖于Java面向对象的原则，面向对象的封装(Encapsulation)和分派(Delegation)告诉我们，尽量将长的代码分派“切割”成每段，将每段再“封装”起来(减少段和段之间耦合联系性)，这样，就会将风险分散，以后如果需要修改，只要更改每段，不会再发生牵一动百的事情。
+     但是，如果创建sqlSession实例时所做的初始化工作不是像赋值这样简单的事，可能是很长一段代码，如果也写入构造函数中，代码很j难看了（就需要Refactor重构）。
+     分析如下，初始化工作如果是很长一段代码，说明要做的工作很多，将很多工作装入一个方法中，相当于将很多鸡蛋放在一个篮子里，是很危险的，这也是有悖于Java面向对象的原则，面向对象的封装(Encapsulation)和分派(Delegation)告诉我们，尽量将长的代码分派“切割”成每段，将每段再“封装”起来(减少段和段之间耦合联系性)，这样，就会将风险分散，以后如果需要修改，只要更改每段，不会再发生牵一动百的事情。
 	所以，Mybatis框架在使用时为我们提供了SqlSessionFactory工厂类，通过方法获取到SqlSession对象。同时方法有很多重载，用于实现不同的需求。这个方法就是openSession()，它支持传入Connection参数来保证连接的一致性；支持传入true|false来保证事务的提交时机等等。
 ```
 
@@ -25,14 +25,14 @@
 		（6） 数据耦合。模块之间通过参数来传递数据，那么被称为数据耦合。数据耦合是最低的一种耦合形式，系统中一般都存在这种类型的耦合，因为为了完成一些有意义的功能，往往需要将某些模块的输出数据作为另一些模块的输入数据。
 		（7） 非直接耦合 。两个模块之间没有直接关系，它们之间的联系完全是通过主模块的控制和调用来实现的。
 	为什么要解耦：
-		耦合是影响软件复杂程度和设计质量的一个重要因素，在设计上我们应采用以下原则：如果模块间必须存在耦合，就尽量使用数据耦合，少用控制耦合，限制公共耦合的范围，尽量避免使用内容耦合。  	
+		耦合是影响软件复杂程度和设计质量的一个重要因素，在设计上应采用以下原则：如果模块间必须存在耦合，就尽量使用数据耦合，少用控制耦合，限制公共耦合的范围，尽量避免使用内容耦合。  	
 ```
 
 ### 2、DI-Dependency Injection
 
 ```tex
     它的全称是依赖注入。是spring框架核心ioc的具体实现。
-	举例说明：我们的程序在编写时，通过控制反转，把对象的创建交给了spring，但是代码中不可能出现没有依赖的情况。ioc解耦只是降低他们的依赖关系，但不会消除。例如：我们的业务层仍会调用持久层的方法。
+	举例说明：程序在编写时，通过控制反转，把对象的创建交给了spring，但是代码中不可能出现没有依赖的情况。ioc解耦只是降低他们的依赖关系，但不会消除。例如：业务层仍会调用持久层的方法。
 那这种业务层和持久层的依赖关系，在使用spring之后，就让spring来维护了。
 	简单的说，就是坐等框架把持久层对象传入业务层，而不用我们自己去获取。
 ```
@@ -326,11 +326,11 @@ public @interface ComponentScan {
 		它和value作用是一样的。
 	basePackageClasses:
 		指定具体要扫描的类的字节码，包括该类的包及其子包下的所有类。
-	nameGenrator:
+	nameGenerator:
 		指定扫描bean对象存入容器时的命名规则。详情请参考第五章第4小节的BeanNameGenerator及其实现类。
 	scopeResolver:
 		用于处理并转换检测到的Bean的作用范围。
-	soperdProxy:
+	scopedProxy:
 		用于指定bean生成时的代理方式。默认是Default，则不使用代理。详情请参考第五章第5小节ScopedProxyMode枚举。
 	resourcePattern:
 		用于指定符合组件检测条件的类文件，默认是包扫描下的  **/*.class
@@ -358,10 +358,10 @@ public @interface ComponentScan {
 ##### 1.2.3、示例
 
 ```java
-	在入门案例中，如果我们加入了dao或者记录日志的工具类，这些使用了@Component或其衍生注解配置的bean，要想让他们进入ioc容器，就少不了使用@ComponentScan
+//在入门案例中，如果我们加入了dao或者记录日志的工具类，这些使用了@Component或其衍生注解配置的bean，要想让他们进入ioc容器，就少不了使用@ComponentScan
 
-package com.itheima.dao.impl;
-import com.itheima.dao.AccountDao;      
+package org.lql.dao.impl;
+import org.lql.dao.AccountDao;      
 
 @Repository("accountDao")
 public class AccountDaoImpl implements AccountDao{
@@ -480,7 +480,7 @@ public @interface Import {
 ##### 1.4.3、示例
 
 ```java
-	在入门案例中，我们使用了SpringConfiguration做为主配置类，而连接数据库相关的配置被分配到了JdbcConfig配置类中，此时使用在SpringConfiguration类上使用@Import注解把JdbcConfig导入进来就可以了。
+	在入门案例中，使用了SpringConfiguration做为主配置类，而连接数据库相关的配置被分配到了JdbcConfig配置类中，此时使用在SpringConfiguration类上使用@Import注解把JdbcConfig导入进来就可以了。
  /**
  * spring的配置类
  * 用于替代xml配置
@@ -488,7 +488,7 @@ public @interface Import {
 @Configuration
 @Import(JdbcConfig.class)
 @PropertySource("classpath:jdbc.properties")
-@ComponentScan("com.itheima")
+@ComponentScan("org.lql")
 public class SpringConfiguration {
 }
 
@@ -571,7 +571,7 @@ public @interface PropertySource {
 ##### 1.5.3、示例
 
 ```properties
-在入门案例中，我们连接数据库的信息如果直接写到JdbcConfig类中，当需要修改时，就面临修改源码的问题，此时使用@PropertySource和SpringEL表达式，就可以把配置放到properties文件中了。
+#在入门案例中，连接数据库的信息如果直接写到JdbcConfig类中，当需要修改时，就面临修改源码的问题，此时使用@PropertySource和SpringEL表达式，就可以把配置放到properties文件中了。
 jdbc.driver=com.mysql.jdbc.Driver
 jdbc.url=jdbc:mysql://localhost:3306/spring_day01
 jdbc.username=root
@@ -743,7 +743,7 @@ public @interface Conditional {
 	value:
 		用于提供一个Condition接口的实现类，实现类中需要编写具体代码实现注入的条件。
 使用场景：
-	当我们在开发时，可能会使用多平台来测试，例如我们的测试数据库分别部署到了linux和windows两个操作系统上面，现在根据我们的工程运行环境选择连接的数据库。此时就可以使用此注解。同时基于此注解引出的@Profile注解，就是根据不同的环境，加载不同的配置信息，详情请参考第五章第9小节@Profile的使用。 
+	在开发时，可能会使用多平台来测试，例如我们的测试数据库分别部署到了linux和windows两个操作系统上面，现在根据我们的工程运行环境选择连接的数据库。此时就可以使用此注解。同时基于此注解引出的@Profile注解，就是根据不同的环境，加载不同的配置信息，详情请参考第五章第9小节@Profile的使用。 
 ```
 
 ##### 2.3.3、示例
@@ -1097,7 +1097,7 @@ public @interface Qualifier {
 	value：
 		用于指定bean的唯一标识。
 使用场景：
-	在我们的项目开发中，很多时候都会用到消息队列，我们一ActiveMQ为例。当和spring整合之后，Spring框架提供了一个JmsTemplate对象，它既可以用于发送点对点模型消息也可以发送主题模型消息。如果项目中两种消息模型都用上了，那么针对不同的代码，将会注入不同的JmsTemplate，而容器中出现两个之后，就可以使用此注解注入。当然不用也可以，我们只需要把要注入的变量名称改为和要注入的bean的id一致即可。
+	在项目开发中，很多时候都会用到消息队列，以ActiveMQ为例。当和spring整合之后，Spring框架提供了一个JmsTemplate对象，它既可以用于发送点对点模型消息也可以发送主题模型消息。如果项目中两种消息模型都用上了，那么针对不同的代码，将会注入不同的JmsTemplate，而容器中出现两个之后，就可以使用此注解注入。当然不用也可以，只需要把要注入的变量名称改为和要注入的bean的id一致即可。
 ```
 
 ##### 4.2.3、示例
@@ -1526,11 +1526,15 @@ public @interface PreDestroy {
 
 ##### 1.2.1、BeanFactory
 
+![image-20211223112242505](images/image-20211223112242505.png)
+
 ```
-	BeanFactory 中定义的各种方法如上面方法注释，整个设计还是比较简洁、直观的，其中将近一半是获取 bean 对象的各种方法，另外就是对 bean 属性的获取和判定，该接口仅仅是定义了 IoC 容器的最基本基本形式，具体实现都交由子类来实现。
+	BeanFactory 中定义的各种方法如上图所示，整个设计还是比较简洁、直观的，其中将近一半是获取 bean 对象的各种方法，另外就是对 bean 属性的获取和判定，该接口仅仅是定义了 IoC 容器的最基本基本形式，具体实现都交由子类来实现。
 ```
 
 ##### 1.2.2、HierarchicalBeanFactory
+
+![image-20211223113010599](images/image-20211223113010599.png)
 
 ```
 	HierarchicalBeanFactory 译为中文是“分层的”，它相对于 BeanFactory 增加了对父 BeanFactory 的获取，子容器可以通过接口方法访问父容器，让容器的设计具备了层次性。这种层次性增强了容器的扩展性和灵活性，我们可以通过编程的方式为一个已有的容器添加一个或多个子容器，从而实现一些特殊功能。层次容器有一个特点就是子容器对于父容器来说是透明的，而子容器则能感知到父容器的存在。典型的应用场景就是 Spring MVC，控制层的 bean 位于子容器中，并将业务层和持久层的 bean 所在的容器设置为父容器，这样的设计可以让控制层的 bean 访问业务层和持久层的 bean，反之则不行，从而在容器层面对三层软件结构设计提供支持。
@@ -1538,11 +1542,15 @@ public @interface PreDestroy {
 
 ##### 1.2.3、ListableBeanFactory
 
+![image-20211223113956054](images/image-20211223113956054.png)
+
 ```
 ListableBeanFactory 引入了获取容器中 bean 的配置信息的若干方法，比如获取容器中 bean 的个数，获取容器中所有 bean 的名称列表，按照目标类型获取 bean 名称，以及检查容器中是否包含指定名称的 bean 等等。Listable 中文译为“可列举的”，对于容器而言，bean 的定义和属性是可以列举的对象。
 ```
 
 ##### 1.2.4、AutowireCapableBeanFactory
+
+![image-20211223114400527](images/image-20211223114400527.png)
 
 ```
 	AutowireCapableBeanFactory 提供了创建 bean、自动注入，初始化以及应用 bean 的后置处理器等功能。自动注入让配置变得更加简单，也让注解配置成为可能，Spring 提供了四种自动注入类型：
@@ -1620,7 +1628,7 @@ AnnotationConfigWebApplicationContext:是注解驱动开发web应用的高级容
 ##### 2.2.2、说明
 
 ```
-现实中的容器都是用来装物品的，Spring 的容器也不例外，这里的物品就是 bean。我通常对于 bean 的印象是一个个躺在配置文件中的 <bean/> 标签，或者是被注解的类，但是这些都是 bean 的静态表示，是还没有放入容器的物料，最终（加载完配置，且在 getBean 之前）加载到容器中的是一个个 BeanDefinition 实例。BeanDefinition 的继承关系如下图，RootBeanDefinition、ChildBeanDefinition，以及 GenericBeanDefinition 是三个主要的实现。有时候我们需要在配置时，通过 parent 属性指定 bean 的父子关系，这个时候父 bean 则用 RootBeanDefinition 表示，而子 bean 则用 ChildBeanDefinition 表示。GenericBeanDefinition 自 2.5 版本引入，是对于一般的 bean 定义的一站式服务中心。
+现实中的容器都是用来装物品的，Spring 的容器也不例外，这里的物品就是 bean。我通常对于 bean 的印象是一个个躺在配置文件中的 <bean/> 标签，或者是被注解的类，但是这些都是 bean 的静态表示，是还没有放入容器的物料，最终（加载完配置，且在 getBean 之前）加载到容器中的是一个个 BeanDefinition 实例。BeanDefinition 的继承关系如上图，RootBeanDefinition、ChildBeanDefinition，以及 GenericBeanDefinition 是三个主要的实现。有时候我们需要在配置时，通过 parent 属性指定 bean 的父子关系，这个时候父 bean 则用 RootBeanDefinition 表示，而子 bean 则用 ChildBeanDefinition 表示。GenericBeanDefinition 自 2.5 版本引入，是对于一般的 bean 定义的一站式服务中心。
 ```
 
 #### 2.2、Bean的定义信息详解
@@ -1629,8 +1637,8 @@ AnnotationConfigWebApplicationContext:是注解驱动开发web应用的高级容
 
 ```java
 /**
- * 在上一小节我们介绍了RootBeanDefinition，ChildBeanDefinition，GenericBeanDefinition三个类
- * 他们都是由AbstractBeanDefinition派生而来，该抽象类中包含了bean的所有配置项和一些支持程序运
+ * RootBeanDefinition，ChildBeanDefinition，GenericBeanDefinition三个类
+ * 都是由AbstractBeanDefinition派生而来，该抽象类中包含了bean的所有配置项和一些支持程序运
  * 行的属性。以下是类中属性的说明。
  */
 public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccessor implements BeanDefinition, Cloneable {
@@ -1748,9 +1756,7 @@ public AnnotationConfigApplicationContext(Class<?>... annotatedClasses) {
 	在ConfigurationClassBeanDefinitionReader类中的registerBeanDefinitionForImportedConfigurationClass方法会把导入的JdbcConfig类注册到容器中。而loadBeanDefinitionsForBeanMethod方法会解析Bean注解，把被Bean注解修饰的方法返回值存入容器。
 ```
 
-##### 3.1.3、执行过程分析图
 
-![ioc-annotation-execute1](images/ioc-annotation-execute1.png)
 
 #### 3.2、使用包扫描的构造函数
 
@@ -1784,9 +1790,7 @@ public AnnotationConfigApplicationContext(String... basePackages) {
 	doScan中的findCandidateComponents方法调用ClassPathScanningCandidateComponentProvider类中的scanCandidateComponents方法，而此方法又去执行了PathMatchingResourcePatternResolver类中的doFindAllClassPathResources方法，找到指定扫描包的URL(是URL，不是路径。因为是带有file协议的)，然后根据磁盘路径读取当前目录及其子目录下的所有类。接下来执行AnnotationConfigUtils类中的processCommonDefinitionAnnotations方法，剩余就和本章节第一小节后面的过程一样了。
 ```
 
-##### 3.2.3、执行过程分析图
-
-![ioc-annotation-execute2](images/ioc-annotation-execute2.png)
+##### 
 
 #### 3.3、注册注解类型过滤器
 
@@ -2411,12 +2415,12 @@ public class SpringConfiguration {
 ##### 6.4.1、场景分析
 
 ```
-	在实际开发中，有很多下面这种业务场景：一个业务需求根据环境的不同可能会有很多种实现。针对不同的环境，要加载不同的实现。我们看下面这个案例：
+	在实际开发中，有很多下面这种业务场景：一个业务需求根据环境的不同可能会有很多种实现。针对不同的环境，要加载不同的实现。如下面这个案例：
 	我们现在是一个汽车销售集团，在成立之初，只是在北京销售汽车，我们的项目研发完成后只在北京部署上线。但随着公司的业务发展，现在全国各地均有销售大区，总部设在北京。各大区有独立的项目部署，但是每个大区的业绩计算和绩效提成的计算方式并不相同。
 	例如：
 		在华北区销售一台豪华级轿车绩效算5，提成销售额1%，销售豪华级SUV绩效算3，提成是0.5%。
 		在西南区销售一台豪华级轿车绩效算3，提成销售额0.5%，销售豪华级SUV绩效算5，提成是1.5%。
-	这时，我们如果针对不同大区对项目源码进行删减替换，会带来很多不必要的麻烦。而如果加入一些if/else的判断，显然过于简单粗暴。此时应该考虑采用桥接设计模式，把将涉及到区域性差异的模块功能单独抽取到代表区域功能的接口中。针对不同区域进行实现。并且在扫描组件注册到容器中时，采用哪个区域的具体实现，应该采用配置文件配置起来。而自定义TypeFilter就可以实现注册指定区域的组件到容器中。
+	这时，如果针对不同大区对项目源码进行删减替换，会带来很多不必要的麻烦。而如果加入一些if/else的判断，显然过于简单粗暴。此时应该考虑采用桥接设计模式，把将涉及到区域性差异的模块功能单独抽取到代表区域功能的接口中。针对不同区域进行实现。并且在扫描组件注册到容器中时，采用哪个区域的具体实现，应该采用配置文件配置起来。而自定义TypeFilter就可以实现注册指定区域的组件到容器中。
 ```
 
 ##### 6.4.2、代码实现
@@ -2598,8 +2602,7 @@ public class DistrictTypeFilter extends AbstractTypeHierarchyTraversingFilter {
     }
 
     // 潜在的满足条件的类的类名, 指定package下
-    private static final String PATTERN_STANDARD = ClassUtils
-            .convertClassNameToResourcePath("com.itheima.service.impl.*");
+    private static final String PATTERN_STANDARD = ClassUtils.convertClassNameToResourcePath("org.lql.service.impl.*");
 
     // 本类逻辑中可以处理的类 -- 指定package下的才会进行逻辑判断,
     private boolean isPotentialPackageClass(String className) {
@@ -2632,11 +2635,11 @@ public class SpringAnnotationTypeFilterTest {
 
 ```
 特别说明：
-	我们在注入bean对象时，可选的方式有很多种。
+	在注入bean对象时，可选的方式有很多种。
 	例如：
 		我们自己写的类，可以使用@Component,@Service,@Repository,@Controller等等。
-		我们导入的第三方库中的类，可以使用@Bean(当需要做一些初始化操作时，比如DataSource)，也可以使用@Import注解，直接指定要引入的类的字节码。
-		但是当我们的类很多时，在每个类上加注解会很繁琐，同时使用@Bean或者@Import写起来也很麻烦。此时我们就可以采用自定义ImportSelector或者ImportBeanDefinitionRegistrar来实现。顺便说一句，在SpringBoot中，@EnableXXX这样的注解，绝大多数都借助了ImportSelector或者ImportBeanDefinitionRegistrar。在我们的spring中，@EnableTransactionManagement就是借助了ImportSelector,而@EnableAspectJAutoporxy就是借助了ImportBeanDefinitionRegistrar。
+		导入的第三方库中的类，可以使用@Bean(当需要做一些初始化操作时，比如DataSource)，也可以使用@Import注解，直接指定要引入的类的字节码。
+		但是当我们的类很多时，在每个类上加注解会很繁琐，同时使用@Bean或者@Import写起来也很麻烦。此时我们就可以采用自定义ImportSelector或者ImportBeanDefinitionRegistrar来实现。在SpringBoot中，@EnableXXX这样的注解，绝大多数都借助了ImportSelector或者ImportBeanDefinitionRegistrar。在我们的spring中，@EnableTransactionManagement就是借助了ImportSelector,而@EnableAspectJAutoporxy就是借助了ImportBeanDefinitionRegistrar。
 		
 共同点：
 	他们都是用于动态注册bean对象到容器中的。并且支持大批量的bean导入。
@@ -2674,7 +2677,7 @@ public class SpringConfiguration {
 ```java
 /**
  * customeimport.properties配置文件中的内容：
- * 		custome.importselector.expression= com.itheima.service.impl.*
+ * 		custome.importselector.expression= org.lql.service.impl.*
  */
 public class CustomeImportSelector implements ImportSelector {
 
@@ -2823,7 +2826,7 @@ public class CustomeImportDefinitionRegistrar implements ImportBeanDefinitionReg
 #### 7.4、原理分析
 
 ```java
-我们写的自定义导入器的解析写在了ConfigurationClassParser类中的processImports方法，以下是源码节选：
+/自定义导入器的解析写在了ConfigurationClassParser类中的processImports方法，以下是源码节选：
 private void processImports(ConfigurationClass configClass, SourceClass currentSourceClass,
             Collection<SourceClass> importCandidates, boolean checkForCircularImports) {
 
@@ -3168,7 +3171,7 @@ public class CustomerPropertySourceFactory implements PropertySourceFactory {
 @Configuration
 @Import(JdbcConfig.class)
 @PropertySource(value = "classpath:jdbc.yml",factory = CustomerPropertySourceFactory.class)
-@ComponentScan("com.itheima")
+@ComponentScan("org.lql")
 public class SpringConfiguration {
 }
 ```
