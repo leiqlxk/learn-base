@@ -304,11 +304,7 @@ public class UserController {
 
 ## 1.4.搭建Nacos集群
 
-Nacos生产环境下一定要部署为集群状态，部署方式参考课前资料中的文档：
-
-![image-20210714174728042](assets/image-20210714174728042.png)
-
-
+Nacos生产环境下一定要部署为集群状态，部署方式在nacos文档
 
 # 2.Feign远程调用
 
