@@ -605,8 +605,6 @@ spring会自动帮助我们从eureka-server端，根据userservice这个服务�
 
 # 4.Ribbon负载均衡
 
-上一节中，我们添加了@LoadBalanced注解，即可实现负载均衡功能，这是什么原理呢？
-
 
 
 ## 4.1.负载均衡原理

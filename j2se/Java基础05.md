@@ -312,7 +312,7 @@ Lambda表达式的使用前提：
 - 使用Lambda表达式必须要有接口，并且要求接口中有且仅有一个抽象方法
 - 必须要有上下文环境，才能推导出Lambda对应的接口，即不能单独使用
   - 根据**局部变量的赋值**可以得知其对应的接口：`Runable r = () -> System.out.println("Lambda表达式");`
-  - 根据**调用方法的参数**可以得知其对应的接口：`new Thread(() -> System.out.println("Lambda表达式")).start();`
+  - 根据**调用方法的参数**可以得知其对应的接口：`new Thread(() -> System.out.println("Lambda表达式")).start();` 
 
 ### 5. Lambda表达式和匿名内部类的区别
 
