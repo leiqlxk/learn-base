@@ -398,8 +398,6 @@ public interface UserClient {
 
 ![image-20210714175415087](assets/image-20210714175415087.png)
 
-是不是看起来优雅多了。
-
 
 
 
@@ -1156,7 +1154,7 @@ public class AuthorizeFilter implements GlobalFilter {
 
 
 
-解决方案：CORS，这个以前应该学习过，这里不再赘述了。不知道的小伙伴可以查看https://www.ruanyifeng.com/blog/2016/04/cors.html
+解决方案：CORS，查看https://www.ruanyifeng.com/blog/2016/04/cors.html
 
 
 

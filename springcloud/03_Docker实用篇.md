@@ -253,9 +253,7 @@ DockerHub：
 
 ## 1.4.安装Docker
 
-企业部署一般都是采用Linux操作系统，而其中又数CentOS发行版占比最多，因此我们在CentOS下安装Docker。参考课前资料中的文档：
-
-![image-20210731155002425](assets/image-20210731155002425.png)
+参考文档
 
 
 
