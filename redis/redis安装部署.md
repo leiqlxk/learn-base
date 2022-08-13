@@ -210,7 +210,7 @@ redis-server 7003/redis.conf
 
 启动后：
 
-![image-20210630183914491](assets/image-20210630183914491.png)
+![image-20210630183914491](../springcloud/assets/image-20210630183914491.png)
 
 
 
@@ -399,7 +399,7 @@ redis-sentinel s3/sentinel.conf
 
 启动后：
 
-![image-20210701220714104](assets/image-20210701220714104.png)
+![image-20210701220714104](../springcloud/assets/image-20210701220714104.png)
 
 
 
@@ -407,7 +407,7 @@ redis-sentinel s3/sentinel.conf
 
 尝试让master节点7001宕机，查看sentinel日志：
 
-![image-20210701222857997](assets/image-20210701222857997.png)
+![image-20210701222857997](../springcloud/assets/image-20210701222857997.png)
 
 查看7003的日志：
 
@@ -595,7 +595,7 @@ redis-cli --cluster create --cluster-replicas 1 192.168.150.101:7001 192.168.150
 
 运行后的样子：
 
-![image-20210702181101969](assets/image-20210702181101969.png)
+![image-20210702181101969](../springcloud/assets/image-20210702181101969.png)
 
 这里输入yes，则集群开始创建：
 
